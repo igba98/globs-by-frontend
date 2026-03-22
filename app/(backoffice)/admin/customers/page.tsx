@@ -17,7 +17,7 @@ const allCustomers = [
 
 const StatusBadge = ({ status }: { status: string }) => {
   const colors: Record<string, string> = {
-    'VIP': 'bg-accent/20 text-accent border border-accent/30',
+    'VIP': 'bg-accent/20 text-accent border border-accent/40',
     'Active': 'bg-green-100 text-green-700 border border-green-200',
     'Inactive': 'bg-gray-100 text-gray-600 border border-gray-200',
     'New': 'bg-blue-100 text-blue-700 border border-blue-200',
