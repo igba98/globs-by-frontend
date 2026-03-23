@@ -55,10 +55,10 @@ export const useCartStore = create<CartState>((set: any, get: any) => ({
   items: [
     { 
       id: '1', 
-      name: 'Executive Office Chair', 
-      price: 249000, 
+      name: 'A4 Copy Paper', 
+      price: 45000, 
       quantity: 1, 
-      image: 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      image: '/logo/SUPPLY/1. A4 Copy Paper.jpeg'
     }
   ],
   openCart: () => set({ isOpen: true }),

@@ -2,24 +2,28 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const categories = [
-  { name: 'Paper & Books', image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop' },
-  { name: 'Tech', image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&auto=format&fit=crop' },
-  { name: 'Art Supplies', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&auto=format&fit=crop' },
-  { name: 'Organizers', image: 'https://images.unsplash.com/photo-1505075955904-15580503e70c?w=500&auto=format&fit=crop' },
-  { name: 'Printers', image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500&auto=format&fit=crop" />' },
-  { name: 'Business', image: 'https://images.unsplash.com/photo-1563206767-1763137a5495?w=500&auto=format&fit=crop' },
-  { name: 'Furniture', image: 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=500&auto=format&fit=crop' },
-  { name: 'School', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&auto=format&fit=crop' }
+  { name: 'A4 Copy Paper', image: '/logo/SUPPLY/1. A4 Copy Paper.jpeg' },
+  { name: 'Mesh Office Document Trays', image: '/logo/SUPPLY/2. Mesh Office Document Trays.jpeg' },
+  { name: 'Legal Papers', image: '/logo/SUPPLY/3. Legal Papers.webp' },
+  { name: 'Thermal Paper Rolls', image: '/logo/SUPPLY/4. Thermal Paper Rolls .jpeg' },
+  { name: 'Manilla Cards', image: '/logo/SUPPLY/5. Manilla Cards.jpeg' },
+  { name: 'Rubber Bands', image: '/logo/SUPPLY/6. Rubber Bands.webp' },
+  { name: 'Correction Pens', image: '/logo/SUPPLY/7. Correction Pens.webp' },
+  { name: 'Shorthand Notebooks', image: '/logo/SUPPLY/8. Shorthand Notebooks.webp' },
+  { name: 'Stapler Machines', image: '/logo/SUPPLY/9. Stapler Machines.webp' },
+  { name: 'PVC Spring Files', image: '/logo/SUPPLY/10. PVC Spring Files.jpeg' },
+  { name: 'Paper Shredder Machines', image: '/logo/SUPPLY/11. Paper Shredder Machines.jpeg' },
+  { name: 'Cartridges & Toners', image: '/logo/SUPPLY/12. Cartridges & Toners.png' },
 ];
 
 export default function CategoryGrid() {
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto py-16 bg-[#f8f9fA] rounded-[3rem] my-8">
       <div className="text-center mb-16">
-        <h2 className="font-heading text-3xl md:text-4xl font-normal text-primary">Categories</h2>
+        <h2 className="font-heading text-3xl md:text-4xl font-normal text-primary">Supply Categories</h2>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
         {categories.map((category) => (
           <Link 
             key={category.name} 

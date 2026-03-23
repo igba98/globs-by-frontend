@@ -1,26 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, use } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
+import { supplyProducts } from '@/lib/data';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [quantity, setQuantity] = useState(1);
   const addItem = useCartStore((state: any) => state.addItem);
 
-  // Adapting the provided "Sofa" screenshot copy into Globs-By office context
-  const product = {
-    name: 'Executive Planner 2026',
-    price: 'TZS 110,000',
-    description: "The Executive Planner combines modern style with everyday productivity. Featuring a sleek faux-leather cover, premium ivory paper, and an ergonomic weekly layout, it's perfect for boardrooms, offices, or deep focus work. A timeless accessory that fits any professional's desk with ease.",
-    mainImage: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=1200',
-    thumb1: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&q=80&w=600',
-    thumb2: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=600',
-  };
+  const product = supplyProducts.find(p => p.id === parseInt(id)) || supplyProducts[0];
 
   return (
     <div className="w-full max-w-7xl mx-auto py-12 lg:py-16">
       
+      {/* Breadcrumb back to shop */}
+      <div className="mb-8">
+        <Link href="/shop" className="text-sm font-bold text-gray-400 hover:text-[#18202D] transition-colors flex items-center gap-2">
+          ← Back to Shop
+        </Link>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         
         {/* Left Column: Image Gallery Grid */}
@@ -28,29 +30,29 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           {/* Main Huge Display Block */}
           <div className="w-full aspect-[4/3] bg-[#f8f9fa] rounded-[2rem] relative overflow-hidden flex items-center justify-center p-8 border border-[#18202D]/5">
              <Image 
-               src={product.mainImage} 
+               src={product.image} 
                alt={product.name} 
                fill 
                className="object-cover hover:scale-105 transition-transform duration-700"
              />
           </div>
           
-          {/* Bottom Thumbnails */}
+          {/* Bottom Thumbnails (Reusing same image or others if available, for now just same) */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="w-full aspect-[4/3] bg-[#f8f9fa] rounded-[2rem] relative overflow-hidden border border-[#18202D]/5 flex items-center justify-center p-4">
+            <div className="w-full aspect-[4/3] bg-[#f8f9fa] rounded-[2rem] relative overflow-hidden border border-[#18202D]/5 flex items-center justify-center p-4 opacity-50">
                <Image 
-                 src={product.thumb1} 
+                 src={product.image} 
                  alt="Detail 1" 
                  fill 
-                 className="object-cover hover:scale-105 transition-transform duration-500"
+                 className="object-cover"
                />
             </div>
-            <div className="w-full aspect-[4/3] bg-[#f8f9fa] rounded-[2rem] relative overflow-hidden border border-[#18202D]/5 flex items-center justify-center p-4">
+            <div className="w-full aspect-[4/3] bg-[#f8f9fa] rounded-[2rem] relative overflow-hidden border border-[#18202D]/5 flex items-center justify-center p-4 opacity-50">
                <Image 
-                 src={product.thumb2} 
+                 src={product.image} 
                  alt="Detail 2" 
                  fill 
-                 className="object-cover hover:scale-105 transition-transform duration-500"
+                 className="object-cover"
                />
             </div>
           </div>
@@ -59,6 +61,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         {/* Right Column: Product Detail Pane */}
         <div className="flex flex-col justify-start py-8">
           
+          <div className="text-[12px] uppercase tracking-wider font-bold text-[#94B447] mb-2">{product.category}</div>
           <h1 className="text-4xl lg:text-[40px] font-medium font-heading text-[#18202D] mb-6">
             {product.name}
           </h1>
@@ -83,7 +86,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                />
              </div>
              {/* Add to Cart Button */}
-             <button onClick={() => addItem({ id: params.id || '1', name: product.name, price: 110000, quantity, image: product.mainImage })} className="h-[52px] bg-[#18202D] text-white px-8 rounded font-semibold text-[15px] hover:bg-[#94B447] transition-colors shadow-sm">
+             <button onClick={() => addItem({ id: product.id.toString(), name: product.name, price: parseInt(product.price.replace(/[^\d]/g, '')), quantity, image: product.image })} className="h-[52px] bg-[#18202D] text-white px-8 rounded font-semibold text-[15px] hover:bg-[#94B447] transition-colors shadow-sm">
                Add to Cart
              </button>
           </div>

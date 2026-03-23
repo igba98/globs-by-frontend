@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const { isOpen, closeCart, openCart, items, getFormattedTotal } = useCartStore();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -16,6 +18,13 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Shop', href: '/shop' },
+    { name: 'Admin', href: '/admin/login' },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-body selection:bg-[#94B447] selection:text-white">
@@ -44,10 +53,22 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 px-8">
-             <Link href="/" className="text-sm font-bold text-[#18202D] border-b-2 border-[#18202D] pb-1">Home</Link>
-             <Link href="/about" className="text-sm font-semibold text-gray-500 hover:text-[#18202D] transition-colors pb-1">About</Link>
-             <Link href="/shop" className="text-sm font-semibold text-gray-500 hover:text-[#18202D] transition-colors pb-1">Shop</Link>
-             <Link href="/admin/login" className="text-sm font-semibold text-gray-500 hover:text-[#18202D] transition-colors pb-1">Admin</Link>
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  className={`text-sm font-bold transition-all pb-1 border-b-2 ${
+                    isActive 
+                      ? 'text-[#18202D] border-[#18202D]' 
+                      : 'text-gray-500 border-transparent hover:text-[#18202D] hover:border-[#18202D]/30'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center">
@@ -67,14 +88,14 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         </div>
       </main>
 
-      {/* 4. The Requested Dark Footer from the Screenshot */}
+      {/* 4. Dark Footer */}
       <footer className="bg-[#18181b] text-white py-16 mt-20 px-4 sm:px-6 lg:px-12 rounded-t-[2.5rem] md:mx-6 mb-6">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-12 lg:gap-8 pb-16">
           
-          {/* Column 1: Newsletter */}
+          {/* Column 1: CTA */}
           <div className="max-w-md">
             <h3 className="text-3xl font-medium font-heading leading-tight mb-8 text-white/95">
-              Stay Connected with the World of Office Solutions
+              Keep In Touch With Us for Top Quality Stationary Supplies
             </h3>
             <div className="relative mb-6">
               <input 
@@ -89,47 +110,41 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
             </button>
           </div>
 
-          {/* Nav Columns Container */}
-          <div className="flex flex-wrap md:flex-nowrap gap-12 lg:gap-24">
+          {/* Nav & Contact Columns */}
+          <div className="flex flex-wrap md:flex-nowrap gap-12 lg:gap-20">
              
-             {/* Nav 1 */}
+             {/* Navigation */}
              <div className="flex flex-col gap-5 text-sm font-medium text-gray-300">
                <Link href="/" className="hover:text-white transition-colors">Home</Link>
                <Link href="/about" className="hover:text-white transition-colors">About</Link>
                <Link href="/shop" className="hover:text-white transition-colors">Shop</Link>
-               <Link href="/blogs" className="hover:text-white transition-colors">Blogs</Link>
-               <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
              </div>
 
-             {/* Nav 2 */}
-             <div className="flex flex-col gap-5 text-sm font-medium text-gray-300">
-               <Link href="/404" className="hover:text-white transition-colors">404 Error</Link>
-               <Link href="/password" className="hover:text-white transition-colors">Password Protected</Link>
-               <Link href="/changelog" className="hover:text-white transition-colors">Changelog</Link>
-               <Link href="/style-guide" className="hover:text-white transition-colors">Style Guide</Link>
-               <Link href="/licenses" className="hover:text-white transition-colors">Licenses</Link>
+             {/* Dar es Salaam Office */}
+             <div className="flex flex-col gap-3 max-w-[220px]">
+               <h4 className="text-lg font-medium text-white mb-1">Dar es Salaam Office</h4>
+               <p className="text-sm text-gray-400">Grants Care Building</p>
+               <p className="text-sm text-gray-400">📞 0743 483 769</p>
              </div>
 
-             {/* Contact Info Column */}
-             <div className="flex flex-col gap-8 max-w-[200px]">
+             {/* Mbeya Office */}
+             <div className="flex flex-col gap-3 max-w-[220px]">
+               <h4 className="text-lg font-medium text-white mb-1">Mbeya Office</h4>
+               <p className="text-sm text-gray-400">Mwanjelwa Tunduma Road</p>
+               <p className="text-sm text-gray-400">📞 0769 017 608</p>
+             </div>
+
+             {/* Email & Social */}
+             <div className="flex flex-col gap-6 max-w-[220px]">
                <div>
-                  <h4 className="text-lg font-medium text-white mb-2">We're just a call away.</h4>
-                  <p className="text-sm text-gray-400">+255 (712) 345-678</p>
-               </div>
-               <div>
-                  <h4 className="text-lg font-medium text-white mb-2">Got a question?</h4>
-                  <p className="text-sm text-gray-400">sales@globs-by.co.tz</p>
+                  <h4 className="text-lg font-medium text-white mb-2">Email</h4>
+                  <p className="text-sm text-gray-400">info@globsby.co.tz</p>
+                  <p className="text-sm text-gray-400">marketing@globsby.co.tz</p>
                </div>
                <div className="flex gap-4">
-                  {/* Social Circles */}
-                  <a href="#" className="w-9 h-9 border border-gray-600 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-                  </a>
-                  <a href="#" className="w-9 h-9 border border-gray-600 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
+                  {/* Instagram */}
+                  <a href="https://www.instagram.com/globsby_stationers?igsh=MW81aHRwaDkwbWw3Zg==" target="_blank" rel="noopener noreferrer" className="w-9 h-9 border border-gray-600 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                  </a>
-                  <a href="#" className="w-9 h-9 border border-gray-600 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
                   </a>
                </div>
              </div>
@@ -139,8 +154,8 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
 
         {/* Absolute Bottom Strip */}
         <div className="max-w-7xl mx-auto border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-gray-500 font-medium">
-           <p>Copyright © Globs-By | Designed by Theme Sleek</p>
-           <p className="mt-4 md:mt-0">Powered by <span className="text-white">Next.js Framework.</span></p>
+           <p>Copyright © Globs-By {new Date().getFullYear()}</p>
+           <p className="mt-4 md:mt-0">Powered by <span className="text-white">Globs-By</span></p>
         </div>
       </footer>
 

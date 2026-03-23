@@ -1,0 +1,98 @@
+export const supplyProducts = [
+  { 
+    id: 1, 
+    name: 'A4 Copy Paper', 
+    price: 'TZS 45,000', 
+    category: 'Paper & Books', 
+    image: '/logo/SUPPLY/1. A4 Copy Paper.jpeg',
+    description: 'High-quality A4 copy paper, perfect for all your office printing and copying needs. Ensures smooth operation and professional results every time.'
+  },
+  { 
+    id: 2, 
+    name: 'Mesh Office Document Trays', 
+    price: 'TZS 35,000', 
+    category: 'Organizers', 
+    image: '/logo/SUPPLY/2. Mesh Office Document Trays.jpeg',
+    description: 'Durable mesh document trays to keep your desk organized. Sleek design that fits perfectly in any modern office setting.'
+  },
+  { 
+    id: 3, 
+    name: 'Legal Papers', 
+    price: 'TZS 55,000', 
+    category: 'Paper & Books', 
+    image: '/logo/SUPPLY/3. Legal Papers.webp',
+    description: 'Official legal-sized paper for all your formal documentation and contracts. Premium weight and texture for a professional feel.'
+  },
+  { 
+    id: 4, 
+    name: 'Thermal Paper Rolls', 
+    price: 'TZS 25,000', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/4. Thermal Paper Rolls .jpeg',
+    description: 'High-sensitivity thermal paper rolls for POS systems and cash registers. Clear, long-lasting prints for all your transactions.'
+  },
+  { 
+    id: 5, 
+    name: 'Manilla Cards', 
+    price: 'TZS 15,000', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/5. Manilla Cards.jpeg',
+    description: 'Versatile manilla cards for filing, labeling, and creative projects. Strong and durable material that withstands daily handling.'
+  },
+  { 
+    id: 6, 
+    name: 'Rubber Bands', 
+    price: 'TZS 8,000', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/6. Rubber Bands.webp',
+    description: 'High-elasticity rubber bands for all your bundling and organizing needs. Available in various sizes for maximum flexibility.'
+  },
+  { 
+    id: 7, 
+    name: 'Correction Pens', 
+    price: 'TZS 5,000', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/7. Correction Pens.webp',
+    description: 'Precision correction pens for clean and easy white-outs. Fast-drying and easy-to-use for mistake-free documents.'
+  },
+  { 
+    id: 8, 
+    name: 'Shorthand Notebooks', 
+    price: 'TZS 12,000', 
+    category: 'Paper & Books', 
+    image: '/logo/SUPPLY/8. Shorthand Notebooks.webp',
+    description: 'Convenient shorthand notebooks for quick notes and meetings. Spiral-bound for easy page flipping and a professional appearance.'
+  },
+  { 
+    id: 9, 
+    name: 'Stapler Machines', 
+    price: 'TZS 28,000', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/9. Stapler Machines.webp',
+    description: 'Heavy-duty stapler machines for reliable and effortless stapling. Ergonomic design for comfortable use even during high-volume tasks.'
+  },
+  { 
+    id: 10, 
+    name: 'PVC Spring Files', 
+    price: 'TZS 18,000', 
+    category: 'Organizers', 
+    image: '/logo/SUPPLY/10. PVC Spring Files.jpeg',
+    description: 'Flexible and durable PVC spring files for efficient document storage. Secure mechanism to keep your papers organized and protected.'
+  },
+  { 
+    id: 11, 
+    name: 'Paper Shredder Machines', 
+    price: 'TZS 450,000', 
+    category: 'Hardware', 
+    image: '/logo/SUPPLY/11. Paper Shredder Machines.jpeg',
+    description: 'High-capacity paper shredder machines for secure document disposal. Quiet operation and durable blades for peace of mind.'
+  },
+  { 
+    id: 12, 
+    name: 'Cartridges & Toners', 
+    price: 'TZS 180,000', 
+    category: 'Hardware', 
+    image: '/logo/SUPPLY/12. Cartridges & Toners.png',
+    description: 'Premium cartridges and toners for crisp and vibrant prints. Compatible with a wide range of office printers for consistent performance.'
+  },
+];
