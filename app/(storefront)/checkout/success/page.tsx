@@ -10,12 +10,12 @@ export default function CheckoutSuccessPage() {
         </svg>
       </div>
       
-      <h1 className="text-4xl md:text-5xl font-extrabold font-heading text-[#18202D] mb-4">
+      <h1 className="text-4xl md:text-5xl font-extrabold font-heading text-[#94B447] mb-4">
         Order Successful!
       </h1>
       
-      <p className="text-gray-500 text-[15px] font-medium max-w-md mb-10 leading-relaxed">
-        Thank you for your purchase. Your order identifier is <span className="font-bold text-[#18202D]">#ORD-9021</span>. We have sent a confirmation email alongside tracking dispatch details.
+      <p className="text-[#18202D] text-[15px] font-medium max-w-md mb-10 leading-relaxed">
+        Thank you for your purchase. Your order identifier is <span className="font-bold text-[#94B447]">#ORD-9021</span>. We have sent a confirmation email alongside tracking dispatch details.
       </p>
       
       <Link href="/shop">

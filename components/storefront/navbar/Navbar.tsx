@@ -38,10 +38,10 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link href="/" className="text-sm font-bold border-b-2 border-primary pb-0.5 text-primary">Home</Link>
-          <Link href="/about" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors pb-0.5">About</Link>
-          <Link href="/shop" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors pb-0.5">Shop</Link>
-          <Link href="/shop" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors pb-0.5">Pages +</Link>
+          <Link href="/" className="text-sm font-bold border-b-2 border-primary pb-0.5 text-[#94B447]">Home</Link>
+          <Link href="/about" className="text-sm font-semibold text-[#18202D] hover:text-[#94B447] transition-colors pb-0.5">About</Link>
+          <Link href="/shop" className="text-sm font-semibold text-[#18202D] hover:text-[#94B447] transition-colors pb-0.5">Shop</Link>
+          <Link href="/shop" className="text-sm font-semibold text-[#18202D] hover:text-[#94B447] transition-colors pb-0.5">Pages +</Link>
         </nav>
 
         {/* Right Actions */}
@@ -56,7 +56,7 @@ export default function Navbar() {
             </span>
           </button>
 
-          <button className="md:hidden text-primary">
+          <button className="md:hidden text-[#94B447]">
             <Menu className="h-6 w-6" />
           </button>
         </div>

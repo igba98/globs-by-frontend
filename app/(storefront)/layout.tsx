@@ -62,7 +62,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
                   className={`text-sm font-bold transition-all pb-1 border-b-2 ${
                     isActive 
                       ? 'text-[#18202D] border-[#18202D]' 
-                      : 'text-gray-500 border-transparent hover:text-[#18202D] hover:border-[#18202D]/30'
+                      : 'text-[#18202D] border-transparent hover:text-[#18202D] hover:border-[#18202D]/30'
                   }`}
                 >
                   {link.name}
@@ -89,7 +89,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       </main>
 
       {/* 4. Dark Footer */}
-      <footer className="bg-[#18181b] text-white py-16 mt-20 px-4 sm:px-6 lg:px-12 rounded-t-[2.5rem] md:mx-6 mb-6">
+      <footer className="bg-[#94B447] text-white py-16 mt-20 px-4 sm:px-6 lg:px-12 rounded-t-[2.5rem] md:mx-6 mb-6">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-12 lg:gap-8 pb-16">
           
           {/* Column 1: CTA */}
@@ -101,7 +101,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
               <input 
                 type="email" 
                 placeholder="Your Email Address" 
-                className="w-full bg-transparent border-b border-gray-700 py-3 text-sm text-gray-300 outline-none focus:border-white transition-colors"
+                className="w-full bg-transparent border-b border-gray-700 py-3 text-sm text-[#18202D] outline-none focus:border-white transition-colors"
                 autoComplete="off"
               />
             </div>
@@ -114,7 +114,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
           <div className="flex flex-wrap md:flex-nowrap gap-12 lg:gap-20">
              
              {/* Navigation */}
-             <div className="flex flex-col gap-5 text-sm font-medium text-gray-300">
+             <div className="flex flex-col gap-5 text-sm font-medium text-[#18202D]">
                <Link href="/" className="hover:text-white transition-colors">Home</Link>
                <Link href="/about" className="hover:text-white transition-colors">About</Link>
                <Link href="/shop" className="hover:text-white transition-colors">Shop</Link>
@@ -123,23 +123,23 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
              {/* Dar es Salaam Office */}
              <div className="flex flex-col gap-3 max-w-[220px]">
                <h4 className="text-lg font-medium text-white mb-1">Dar es Salaam Office</h4>
-               <p className="text-sm text-gray-400">Grants Care Building</p>
-               <p className="text-sm text-gray-400">📞 0743 483 769</p>
+               <p className="text-sm text-[#18202D]">Grants Care Building</p>
+               <p className="text-sm text-[#18202D]">📞 0743 483 769</p>
              </div>
 
              {/* Mbeya Office */}
              <div className="flex flex-col gap-3 max-w-[220px]">
                <h4 className="text-lg font-medium text-white mb-1">Mbeya Office</h4>
-               <p className="text-sm text-gray-400">Mwanjelwa Tunduma Road</p>
-               <p className="text-sm text-gray-400">📞 0769 017 608</p>
+               <p className="text-sm text-[#18202D]">Mwanjelwa Tunduma Road</p>
+               <p className="text-sm text-[#18202D]">📞 0769 017 608</p>
              </div>
 
              {/* Email & Social */}
              <div className="flex flex-col gap-6 max-w-[220px]">
                <div>
                   <h4 className="text-lg font-medium text-white mb-2">Email</h4>
-                  <p className="text-sm text-gray-400">info@globsby.co.tz</p>
-                  <p className="text-sm text-gray-400">marketing@globsby.co.tz</p>
+                  <p className="text-sm text-[#18202D]">info@globsby.co.tz</p>
+                  <p className="text-sm text-[#18202D]">marketing@globsby.co.tz</p>
                </div>
                <div className="flex gap-4">
                   {/* Instagram */}
@@ -153,7 +153,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         </div>
 
         {/* Absolute Bottom Strip */}
-        <div className="max-w-7xl mx-auto border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-gray-500 font-medium">
+        <div className="max-w-7xl mx-auto border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-[#18202D] font-medium">
            <p>Copyright © Globs-By {new Date().getFullYear()}</p>
            <p className="mt-4 md:mt-0">Powered by <span className="text-white">Globs-By</span></p>
         </div>
@@ -167,8 +167,8 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
           <div className="relative w-full max-w-[480px] bg-white rounded-3xl shadow-2xl flex flex-col animate-in zoom-in-95 duration-200 overflow-hidden mx-4">
              {/* Header */}
              <div className="px-8 py-6 flex justify-between items-center border-b border-gray-100">
-                <h2 className="text-2xl font-medium font-heading text-[#18202D]">Your Cart</h2>
-                <button onClick={closeCart} className="text-gray-400 hover:text-[#18202D] transition-colors p-1">
+                <h2 className="text-2xl font-medium font-heading text-[#94B447]">Your Cart</h2>
+                <button onClick={closeCart} className="text-[#18202D] hover:text-[#18202D] transition-colors p-1">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
              </div>
@@ -177,7 +177,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
              <div className="p-8 pb-4 flex flex-col gap-6 max-h-[40vh] overflow-y-auto">
                 
                 {items.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 font-medium">Your cart is currently empty.</div>
+                  <div className="text-center py-8 text-[#18202D] font-medium">Your cart is currently empty.</div>
                 ) : (
                   items.map((item: any) => (
                     <div key={item.id} className="flex items-center gap-6">
@@ -188,9 +188,9 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
                       
                       {/* Details */}
                       <div className="flex-1">
-                         <h4 className="text-[17px] font-medium text-[#18202D] truncate w-40 sm:w-auto">{item.name}</h4>
+                         <h4 className="text-[17px] font-medium text-[#94B447] truncate w-40 sm:w-auto">{item.name}</h4>
                          <p className="text-[13px] text-[#18202D] mt-1">TZS {(item.price).toLocaleString()}</p>
-                         <button onClick={() => useCartStore.getState().removeItem(item.id)} className="text-[12px] text-gray-400 hover:text-red-500 transition-colors mt-2 font-medium">Remove</button>
+                         <button onClick={() => useCartStore.getState().removeItem(item.id)} className="text-[12px] text-[#18202D] hover:text-red-500 transition-colors mt-2 font-medium">Remove</button>
                       </div>
                       
                       {/* Quantity Input */}

@@ -58,7 +58,7 @@ export default function AboutPage() {
       <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto pt-4 md:pt-[20px] pb-16">
         <div className="relative w-full h-[80vh] min-h-[600px] rounded-[3rem] overflow-hidden bg-zinc-900 group">
            <Image 
-             src="/logo/SUPPLY/1. A4 Copy Paper.jpeg" 
+             src="/OTHER PICS/4.avif" 
              fill 
              className="object-cover object-center opacity-80 group-hover:scale-105 transition-transform duration-1000" 
              alt="About Globs-By" 
@@ -66,8 +66,8 @@ export default function AboutPage() {
            
            {/* Left Floating Box */}
            <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 bg-white rounded-[2rem] p-8 md:p-12 max-w-md shadow-2xl transition-transform duration-500 hover:-translate-y-2">
-              <h1 className="font-heading text-4xl lg:text-5xl font-normal text-primary mb-6">About Us</h1>
-              <p className="text-muted-foreground leading-relaxed text-sm">
+              <h1 className="font-heading text-4xl lg:text-5xl font-normal text-[#94B447] mb-6">About Us</h1>
+              <p className="text-[#18202D] leading-relaxed text-sm">
                 Globs-by is your playground for top quality stationary products. Our lovingly hand-crafted accessories are created to spark creativity and make ordinary tasks more delightful.
               </p>
            </div>
@@ -93,14 +93,14 @@ export default function AboutPage() {
       {/* Core Values */}
       <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto pb-16">
         <div className="w-full bg-[#f8f9fa] rounded-[2rem] py-8 text-center mb-6">
-          <h2 className="font-heading text-2xl md:text-3xl font-normal text-primary">Core Values</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-normal text-[#94B447]">Core Values</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {coreValues.map((value) => (
             <div key={value.name} className="bg-[#f8f9fa] rounded-[3rem] p-10 flex flex-col justify-center transition-shadow hover:shadow-lg">
               <value.icon className="h-8 w-8 text-primary mb-6" />
-              <h3 className="font-heading text-xl font-normal text-primary mb-3">{value.name}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed font-light">
+              <h3 className="font-heading text-xl font-normal text-[#94B447] mb-3">{value.name}</h3>
+              <p className="text-sm text-[#18202D] leading-relaxed font-normal">
                 {value.description}
               </p>
             </div>
@@ -111,16 +111,16 @@ export default function AboutPage() {
       {/* Our Services */}
       <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto pb-16">
         <div className="w-full bg-[#f8f9fa] rounded-[2rem] py-8 text-center mb-6">
-          <h2 className="font-heading text-2xl md:text-3xl font-normal text-primary">Our Services</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-normal text-[#94B447]">Our Services</h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[400px]">
           {/* Left Image */}
           <div className="relative rounded-[3rem] overflow-hidden min-h-[300px] group">
-            <Image src="/logo/SUPPLY/11. Paper Shredder Machines.jpeg" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" alt="Our Services" />
+            <Image src="/OTHER PICS/5.avif" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" alt="Our Services" />
           </div>
           {/* Right Services List */}
           <div className="bg-[#f8f9fa] rounded-[3rem] p-12 lg:p-20 flex flex-col justify-center">
-            <h3 className="font-heading text-3xl md:text-4xl font-normal text-primary mb-8 leading-tight max-w-sm">
+            <h3 className="font-heading text-3xl md:text-4xl font-normal text-[#94B447] mb-8 leading-tight max-w-sm">
               What We Offer
             </h3>
             <div className="space-y-6">
@@ -138,10 +138,10 @@ export default function AboutPage() {
       {/* Brands We Work With */}
       <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto pb-16">
         <div className="w-full bg-[#f8f9fa] rounded-[2rem] py-8 text-center mb-6">
-          <h2 className="font-heading text-2xl md:text-3xl font-normal text-primary">Brands We Work With</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-normal text-[#94B447]">Brands We Work With</h2>
         </div>
         <div className="bg-[#f8f9fa] rounded-[3rem] p-12">
-          <p className="text-center text-muted-foreground text-sm leading-relaxed mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-[#18202D] text-sm leading-relaxed mb-12 max-w-2xl mx-auto">
             We supply different options from multiple top global brands to ensure excellent quality and a diverse assortment. Top brands. Trusted quality. Endless choices.
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8 items-center justify-items-center">
@@ -157,10 +157,10 @@ export default function AboutPage() {
       {/* Business Partners */}
       <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto pb-16">
         <div className="w-full bg-[#f8f9fa] rounded-[2rem] py-8 text-center mb-6">
-          <h2 className="font-heading text-2xl md:text-3xl font-normal text-primary">Business Partners</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-normal text-[#94B447]">Business Partners</h2>
         </div>
         <div className="bg-[#f8f9fa] rounded-[3rem] p-12">
-          <p className="text-center text-muted-foreground text-sm leading-relaxed mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-[#18202D] text-sm leading-relaxed mb-12 max-w-2xl mx-auto">
             We are proud to serve business partners and clients from diverse sectors which demonstrates our commitment to quality, reliability and tailored stationary solutions for private and corporate procurement.
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-8 items-center justify-items-center">
@@ -177,35 +177,35 @@ export default function AboutPage() {
       <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto pb-20">
         {/* FAQ Header Pill */}
         <div className="w-full bg-[#f8f9fa] rounded-[2rem] py-8 text-center mb-6">
-           <h2 className="font-heading text-2xl md:text-3xl font-normal text-primary">FAQ</h2>
+           <h2 className="font-heading text-2xl md:text-3xl font-normal text-[#94B447]">FAQ</h2>
         </div>
         
         {/* FAQ Split */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[500px]">
            {/* Left Image */}
            <div className="relative rounded-[3rem] overflow-hidden min-h-[300px] group">
-              <Image src="/logo/SUPPLY/12. Cartridges & Toners.png" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" alt="FAQ Background" />
+              <Image src="/OTHER PICS/6.avif" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" alt="FAQ Background" />
            </div>
            
            {/* Right FAQ List */}
            <div className="bg-[#f8f9fa] rounded-[3rem] p-12 lg:p-20 flex flex-col justify-center">
-              <h3 className="font-heading text-3xl md:text-4xl font-normal text-primary mb-6">Questions We Often Hear</h3>
-              <p className="text-sm font-light text-muted-foreground leading-relaxed mb-16 max-w-sm">
+              <h3 className="font-heading text-3xl md:text-4xl font-normal text-[#94B447] mb-6">Questions We Often Hear</h3>
+              <p className="text-sm font-normal text-[#18202D] leading-relaxed mb-16 max-w-sm">
                  From product details to shipping info, browse the answers to your most asked questions and shop with confidence.
               </p>
               
               <div className="space-y-8">
                  <div className="flex justify-between items-center border-b border-gray-200/60 pb-6 cursor-pointer hover:opacity-70 transition-opacity">
                     <span className="font-medium text-lg text-primary tracking-wide">Do You Ship Nationwide?</span>
-                    <span className="text-2xl font-light text-primary">+</span>
+                    <span className="text-2xl font-normal text-primary">+</span>
                  </div>
                  <div className="flex justify-between items-center border-b border-gray-200/60 pb-6 cursor-pointer hover:opacity-70 transition-opacity">
                     <span className="font-medium text-lg text-primary tracking-wide">What Types Of Products Do You Offer?</span>
-                    <span className="text-2xl font-light text-primary">+</span>
+                    <span className="text-2xl font-normal text-primary">+</span>
                  </div>
                  <div className="flex justify-between items-center border-b border-gray-200/60 pb-6 cursor-pointer hover:opacity-70 transition-opacity">
                     <span className="font-medium text-lg text-primary tracking-wide">What Is Your Delivery Time?</span>
-                    <span className="text-2xl font-light text-primary">+</span>
+                    <span className="text-2xl font-normal text-primary">+</span>
                  </div>
               </div>
            </div>

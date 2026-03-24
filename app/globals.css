@@ -4,19 +4,19 @@
 
 :root {
   --background: #F7F5F2;
-  --foreground: #1A1A1A;
+  --foreground: #18202D;
 
   --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --card-foreground: #18202D;
 
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
+  --popover-foreground: #18202D;
 
   --primary: #18202D;
   --primary-foreground: #FFFFFF;
 
   --secondary: #F0EDEA;
-  --secondary-foreground: #1A1A1A;
+  --secondary-foreground: #18202D;
 
   --muted: #F0EDEA;
   --muted-foreground: #9CA3AF;
@@ -67,6 +67,6 @@
     @apply bg-background text-foreground;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal;
+    @apply font-heading font-normal text-accent;
   }
 }

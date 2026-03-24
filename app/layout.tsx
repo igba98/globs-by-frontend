@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${dmSans.variable} font-body font-thin antialiased`}>
+      <body className={`${outfit.variable} ${dmSans.variable} font-body font-normal antialiased`}>
         <CartProvider>
           {children}
           <CartModal />

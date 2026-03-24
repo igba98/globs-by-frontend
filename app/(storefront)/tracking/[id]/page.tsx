@@ -25,15 +25,15 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
           <div className="inline-flex items-center justify-center w-20 h-20 bg-green-50 text-green-600 rounded-full mb-6">
             <CheckCircle className="w-10 h-10" />
           </div>
-          <h1 className="font-heading text-4xl text-primary font-medium mb-4">Order Successfully Placed!</h1>
-          <p className="text-muted-foreground text-lg">
-            Thank you for shopping with Globs-By. Your order <span className="font-bold text-primary">{orderId}</span> is now being processed.
+          <h1 className="font-heading text-4xl text-[#94B447] font-medium mb-4">Order Successfully Placed!</h1>
+          <p className="text-[#18202D] text-lg">
+            Thank you for shopping with Globs-By. Your order <span className="font-bold text-[#94B447]">{orderId}</span> is now being processed.
           </p>
         </div>
 
         {/* Tracking Stepper */}
         <div className="bg-[#f8f9fa] rounded-[3rem] p-10 sm:p-16 border border-gray-100">
-           <h2 className="font-heading text-2xl text-primary mb-10">Live Tracking</h2>
+           <h2 className="font-heading text-2xl text-[#94B447] mb-10">Live Tracking</h2>
            
            <div className="relative">
               {/* Vertical line connecting steps */}
@@ -49,15 +49,15 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
                       <div className={`relative z-10 w-16 h-16 rounded-full flex flex-shrink-0 items-center justify-center transition-colors shadow-sm
                         ${stage.status === 'completed' ? 'bg-primary text-white scale-100' : 
                           stage.status === 'active' ? 'bg-white border-[3px] border-primary text-primary scale-110 shadow-md' : 
-                          'bg-white border-2 border-gray-200 text-gray-300'}
+                          'bg-white border-2 border-gray-200 text-[#18202D]'}
                       `}>
                          <Icon className="w-6 h-6" />
                       </div>
 
                       {/* Content */}
                       <div className={`pt-3 ${stage.status === 'pending' ? 'opacity-40' : 'opacity-100'}`}>
-                        <h4 className="font-heading text-xl text-primary">{stage.name}</h4>
-                        <p className="text-sm font-medium text-muted-foreground mt-1">{stage.description}</p>
+                        <h4 className="font-heading text-xl text-[#94B447]">{stage.name}</h4>
+                        <p className="text-sm font-medium text-[#18202D] mt-1">{stage.description}</p>
                         
                         {stage.status === 'active' && (
                           <div className="mt-4 inline-block bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider">

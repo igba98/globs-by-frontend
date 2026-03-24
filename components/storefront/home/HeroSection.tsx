@@ -18,10 +18,10 @@ export default function HeroSection() {
           />
           {/* Floating White Panel */}
           <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-12 bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl max-w-md transition-transform duration-500 hover:-translate-y-2">
-            <h1 className="font-heading text-3xl md:text-5xl font-normal text-primary leading-tight mb-4">
+            <h1 className="font-heading text-3xl md:text-5xl font-normal text-[#94B447] leading-tight mb-4">
               Premium Office <br/> Supplies For You
             </h1>
-            <p className="text-muted-foreground leading-relaxed mb-8">
+            <p className="text-[#18202D] leading-relaxed mb-8">
               Discover thoughtfully crafted stationery and office equipment designed to elevate your workspace and productivity.
             </p>
             <Link href="/shop" className="inline-flex items-center gap-2 font-medium text-sm border-b border-primary pb-1 group/link">
@@ -43,7 +43,7 @@ export default function HeroSection() {
           {/* Floating Product Card */}
           <div className="absolute bottom-10 right-10 bg-[#e5e5e5] rounded-[2rem] p-6 w-[280px] shadow-2xl transition-transform duration-500 hover:-translate-y-2 flex flex-col items-center">
             {/* Top Pill Overlap */}
-            <div className="absolute -top-4 bg-white px-6 py-2 rounded-full shadow-sm text-sm font-semibold text-primary">
+            <div className="absolute -top-4 bg-white px-6 py-2 rounded-full shadow-sm text-sm font-semibold text-[#94B447]">
               Executive Pen
             </div>
             

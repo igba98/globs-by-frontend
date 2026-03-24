@@ -18,7 +18,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       
       {/* Breadcrumb back to shop */}
       <div className="mb-8">
-        <Link href="/shop" className="text-sm font-bold text-gray-400 hover:text-[#18202D] transition-colors flex items-center gap-2">
+        <Link href="/shop" className="text-sm font-bold text-[#18202D] hover:text-[#94B447] transition-colors flex items-center gap-2">
           ← Back to Shop
         </Link>
       </div>
@@ -62,11 +62,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         <div className="flex flex-col justify-start py-8">
           
           <div className="text-[12px] uppercase tracking-wider font-bold text-[#94B447] mb-2">{product.category}</div>
-          <h1 className="text-4xl lg:text-[40px] font-medium font-heading text-[#18202D] mb-6">
+          <h1 className="text-4xl lg:text-[40px] font-medium font-heading text-[#94B447] mb-6">
             {product.name}
           </h1>
 
-          <p className="text-[15px] leading-relaxed text-gray-500 mb-8 max-w-[90%] font-medium">
+          <p className="text-[15px] leading-relaxed text-[#18202D] mb-8 max-w-[90%] font-medium">
             {product.description}
           </p>
 
@@ -93,27 +93,27 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Shipping & Delivery Grid */}
           <div className="pt-10 border-t border-gray-100">
-             <h3 className="text-xl font-medium text-[#18202D] mb-8">Shipping & Delivery</h3>
+             <h3 className="text-xl font-medium text-[#94B447] mb-8">Shipping & Delivery</h3>
              
              <div className="grid grid-cols-3 gap-6">
                
                <div className="flex flex-col gap-4">
                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#18202D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M16.5 4.5l3-3"></path><path d="M21 7V3h-4"></path></svg>
-                 <p className="text-[13px] text-gray-800 font-medium leading-snug">
+                 <p className="text-[13px] text-[#18202D] font-medium leading-snug">
                    Quick order preparation and dispatch.
                  </p>
                </div>
                
                <div className="flex flex-col gap-4">
                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#18202D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                 <p className="text-[13px] text-gray-800 font-medium leading-snug">
+                 <p className="text-[13px] text-[#18202D] font-medium leading-snug">
                    Safe and reliable on-time delivery assured.
                  </p>
                </div>
                
                <div className="flex flex-col gap-4">
                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#18202D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-                 <p className="text-[13px] text-gray-800 font-medium leading-snug">
+                 <p className="text-[13px] text-[#18202D] font-medium leading-snug">
                    Easy tracking from dispatch to arrival.
                  </p>
                </div>

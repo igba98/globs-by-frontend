@@ -22,10 +22,10 @@ export default function CartModal() {
         
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <h2 className="text-2xl font-heading text-primary font-medium">Your Cart</h2>
+          <h2 className="text-2xl font-heading text-[#94B447] font-medium">Your Cart</h2>
           <button 
             onClick={() => setIsCartOpen(false)}
-            className="text-gray-400 hover:text-primary transition-colors text-2xl"
+            className="text-[#18202D] hover:text-primary transition-colors text-2xl"
           >
             &times;
           </button>
@@ -34,7 +34,7 @@ export default function CartModal() {
         {/* Cart Items List */}
         <div className="max-h-[50vh] overflow-y-auto px-6 py-4 space-y-6">
           {items.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">Your cart is currently empty.</p>
+            <p className="text-[#18202D] text-center py-8">Your cart is currently empty.</p>
           ) : (
             items.map((item) => (
               <div key={item.id} className="flex gap-4 items-center">
@@ -51,11 +51,11 @@ export default function CartModal() {
 
                 {/* Info */}
                 <div className="flex-1">
-                  <h3 className="font-heading text-lg text-primary">{item.name}</h3>
-                  <p className="text-sm font-semibold text-primary mt-1">{item.price}</p>
+                  <h3 className="font-heading text-lg text-[#94B447]">{item.name}</h3>
+                  <p className="text-sm font-semibold text-[#94B447] mt-1">{item.price}</p>
                   <button 
                     onClick={() => removeFromCart(item.id)}
-                    className="text-xs text-muted-foreground hover:text-red-500 mt-2 transition-colors"
+                    className="text-xs text-[#18202D] hover:text-red-500 mt-2 transition-colors"
                   >
                     Remove
                   </button>
@@ -79,7 +79,7 @@ export default function CartModal() {
           <div className="p-6 bg-gray-50/50 border-t border-gray-100">
             <div className="flex justify-between items-center mb-6">
               <span className="text-lg font-medium text-primary">Subtotal</span>
-              <span className="text-xl font-heading text-primary">{subtotal}</span>
+              <span className="text-xl font-heading text-[#94B447]">{subtotal}</span>
             </div>
             <Link 
               href="/checkout"

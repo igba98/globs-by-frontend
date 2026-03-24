@@ -20,7 +20,7 @@ export default function CategoryGrid() {
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto py-16 bg-[#f8f9fA] rounded-[3rem] my-8">
       <div className="text-center mb-16">
-        <h2 className="font-heading text-3xl md:text-4xl font-normal text-primary">Supply Categories</h2>
+        <h2 className="font-heading text-3xl md:text-4xl font-normal text-[#94B447]">Supply Categories</h2>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">

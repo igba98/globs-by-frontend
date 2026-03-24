@@ -52,8 +52,8 @@ export default function ProductCard({ product }: ProductCardProps) {
          {/* Bottom Floating Info Box (Revealed on Hover) */}
          <div className="absolute bottom-6 left-6 right-6 bg-white rounded-[2rem] p-6 flex justify-between items-center shadow-[0_10px_40px_rgba(0,0,0,0.15)] opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-30">
            <div>
-             <h4 className="font-heading font-normal text-xl text-primary md:text-2xl mb-1 truncate max-w-[150px] sm:max-w-[200px]">{product.name}</h4>
-             <p className="text-sm md:text-base font-semibold text-primary">{product.price}</p>
+             <h4 className="font-heading font-normal text-xl text-[#94B447] md:text-2xl mb-1 truncate max-w-[150px] sm:max-w-[200px]">{product.name}</h4>
+             <p className="text-sm md:text-base font-semibold text-[#94B447]">{product.price}</p>
            </div>
            <button 
              onClick={handleAddToCart}

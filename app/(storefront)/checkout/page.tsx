@@ -12,8 +12,8 @@ export default function CheckoutPage() {
       
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="text-4xl font-extrabold font-heading text-[#18202D]">Checkout</h1>
-        <p className="text-sm font-medium text-gray-400 mt-2">Secure encrypted payment processing.</p>
+        <h1 className="text-4xl font-extrabold font-heading text-[#94B447]">Checkout</h1>
+        <p className="text-sm font-medium text-[#18202D] mt-2">Secure encrypted payment processing.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -23,7 +23,7 @@ export default function CheckoutPage() {
           
           {/* Section 1: Customer Details */}
           <section>
-            <h2 className="text-xl font-bold text-[#18202D] mb-6 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-[#94B447] mb-6 flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-[#18202D] text-white flex items-center justify-center text-xs">1</span>
               Customer Details
             </h2>
@@ -40,7 +40,7 @@ export default function CheckoutPage() {
 
           {/* Section 2: Mobile Network & Payments */}
           <section>
-            <h2 className="text-xl font-bold text-[#18202D] mb-6 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-[#94B447] mb-6 flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-[#18202D] text-white flex items-center justify-center text-xs">2</span>
               Payment Method
             </h2>
@@ -51,8 +51,8 @@ export default function CheckoutPage() {
                  <div className="flex items-center gap-4">
                    <input type="radio" name="payment" defaultChecked className="w-5 h-5 accent-[#18202D]" />
                    <div>
-                     <h4 className="text-[15px] font-bold text-[#18202D]">Mobile Network (Tanzania)</h4>
-                     <p className="text-[13px] text-gray-500 font-medium">Pay instantly via M-Pesa, Tigo Pesa, or Airtel Money.</p>
+                     <h4 className="text-[15px] font-bold text-[#94B447]">Mobile Network (Tanzania)</h4>
+                     <p className="text-[13px] text-[#18202D] font-medium">Pay instantly via M-Pesa, Tigo Pesa, or Airtel Money.</p>
                    </div>
                  </div>
                  <div className="flex gap-2">
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
                
                {/* Internal M-Pesa push form simulation */}
                <div className="bg-[#f8f9fa] border border-[#18202D]/10 rounded-2xl p-6 pl-14">
-                  <p className="text-[13px] font-medium text-gray-600 mb-3 cursor-text">Enter your mobile money number to receive a payment prompt on your phone.</p>
+                  <p className="text-[13px] font-medium text-[#18202D] mb-3 cursor-text">Enter your mobile money number to receive a payment prompt on your phone.</p>
                   <input type="tel" placeholder="07XX XXX XXX or 06XX XXX XXX" className="w-full max-w-sm p-4 rounded-xl border border-gray-200 outline-none text-[15px] font-medium shadow-sm placeholder-gray-400 focus:border-[#18202D]" />
                </div>
 
@@ -73,8 +73,8 @@ export default function CheckoutPage() {
                  <div className="flex items-center gap-4">
                    <input type="radio" name="payment" className="w-5 h-5 accent-[#18202D]" />
                    <div>
-                     <h4 className="text-[15px] font-bold text-[#18202D]">Credit Card</h4>
-                     <p className="text-[13px] text-gray-500 font-medium">Visa, Mastercard, American Express.</p>
+                     <h4 className="text-[15px] font-bold text-[#94B447]">Credit Card</h4>
+                     <p className="text-[13px] text-[#18202D] font-medium">Visa, Mastercard, American Express.</p>
                    </div>
                  </div>
                  <div className="flex gap-2">
@@ -92,7 +92,7 @@ export default function CheckoutPage() {
         {/* Right Panel: Order Summary */}
         <div className="lg:col-span-5">
           <div className="bg-[#f8f9fa] rounded-3xl p-8 sticky top-[100px] border border-[#18202D]/5">
-            <h3 className="text-xl font-bold text-[#18202D] mb-6">Order Summary</h3>
+            <h3 className="text-xl font-bold text-[#94B447] mb-6">Order Summary</h3>
             
             <div className="flex flex-col gap-6 mb-8 border-b border-gray-200 pb-8">
                {items.map((item: any) => (
@@ -102,10 +102,10 @@ export default function CheckoutPage() {
                      <div className="absolute top-[-5px] right-[-5px] w-5 h-5 bg-[#18202D] text-white rounded-full flex items-center justify-center text-[10px] z-10">{item.quantity}</div>
                    </div>
                    <div className="flex-1 flex flex-col justify-center">
-                     <h4 className="text-[15px] font-bold text-[#18202D]">{item.name}</h4>
-                     <p className="text-[13px] font-medium text-gray-500">TZS {(item.price).toLocaleString()}</p>
+                     <h4 className="text-[15px] font-bold text-[#94B447]">{item.name}</h4>
+                     <p className="text-[13px] font-medium text-[#18202D]">TZS {(item.price).toLocaleString()}</p>
                    </div>
-                   <div className="text-[15px] font-bold text-[#18202D] flex items-center">
+                   <div className="text-[15px] font-bold text-[#94B447] flex items-center">
                      TZS {(item.price * item.quantity).toLocaleString()}
                    </div>
                  </div>
@@ -114,11 +114,11 @@ export default function CheckoutPage() {
 
             <div className="flex flex-col gap-3 font-medium text-[15px] text-[#18202D] mb-8">
               <div className="flex justify-between">
-                <span className="text-gray-500">Subtotal</span>
+                <span className="text-[#18202D]">Subtotal</span>
                 <span>{getFormattedTotal()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Shipping (Dar es Salaam)</span>
+                <span className="text-[#18202D]">Shipping (Dar es Salaam)</span>
                 <span>TZS 5,000</span>
               </div>
               <div className="flex justify-between pt-4 border-t border-gray-200 text-xl font-extrabold pb-2">
@@ -133,7 +133,7 @@ export default function CheckoutPage() {
               </button>
             </Link>
 
-            <p className="text-center text-[11px] text-gray-400 mt-6 flex items-center justify-center gap-1 font-medium">
+            <p className="text-center text-[11px] text-[#18202D] mt-6 flex items-center justify-center gap-1 font-medium">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
               Standard 256-bit SSL Encryption
             </p>
