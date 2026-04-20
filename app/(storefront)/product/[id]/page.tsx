@@ -9,7 +9,14 @@ import { supplyProducts } from '@/lib/data';
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
   const addItem = useCartStore((state: any) => state.addItem);
+
+  const handleAddToCart = () => {
+    addItem({ id: product.id.toString(), name: product.name, price: parseInt(product.price.replace(/[^\d]/g, '')), quantity, image: product.image });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   const product = supplyProducts.find(p => p.id === parseInt(id)) || supplyProducts[0];
 
@@ -86,8 +93,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                />
              </div>
              {/* Add to Cart Button */}
-             <button onClick={() => addItem({ id: product.id.toString(), name: product.name, price: parseInt(product.price.replace(/[^\d]/g, '')), quantity, image: product.image })} className="h-[52px] bg-[#18202D] text-white px-8 rounded font-semibold text-[15px] hover:bg-[#94B447] transition-colors shadow-sm">
-               Add to Cart
+             <button 
+               onClick={handleAddToCart} 
+               className={`h-[52px] px-8 rounded font-semibold text-[15px] transition-colors shadow-sm flex items-center justify-center gap-2 min-w-[160px] ${
+                 added ? 'bg-[#94B447] text-white' : 'bg-[#18202D] text-white hover:bg-[#94B447]'
+               }`}
+             >
+               {added ? 'Added to Cart!' : 'Add to Cart'}
              </button>
           </div>
 

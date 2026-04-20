@@ -24,6 +24,10 @@
   --accent: #94B447;
   --accent-foreground: #FFFFFF;
 
+  --highlight: #F5A623;
+  --highlight-foreground: #FFFFFF;
+  --orange: #FF6B35;
+
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
 
@@ -49,6 +53,9 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-orange: var(--orange);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);

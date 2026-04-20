@@ -1,11 +1,25 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 
+const DELIVERY_FEES = {
+  dar_es_salaam: 5000,
+  mbeya: 15000,
+  other: 25000,
+};
+
 export default function CheckoutPage() {
   const { items, getFormattedTotal } = useCartStore();
+  
+  const [deliveryMethod, setDeliveryMethod] = useState<'delivery' | 'pickup'>('delivery');
+  const [deliveryZone, setDeliveryZone] = useState<keyof typeof DELIVERY_FEES>('dar_es_salaam');
+
+  const subtotal = items.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
+  const deliveryFee = deliveryMethod === 'delivery' ? DELIVERY_FEES[deliveryZone] : 0;
+  const total = subtotal + deliveryFee;
 
   return (
     <div className="w-full max-w-7xl mx-auto py-12 px-4 sm:px-6">
@@ -34,14 +48,58 @@ export default function CheckoutPage() {
               </div>
               <input type="email" placeholder="Email Address" className="w-full p-4 rounded-xl border border-gray-200 outline-none text-[15px] font-medium placeholder-gray-400 focus:border-[#18202D]" />
               <input type="tel" placeholder="Phone Number (e.g. +255 712...)" className="w-full p-4 rounded-xl border border-gray-200 outline-none text-[15px] font-medium placeholder-gray-400 focus:border-[#18202D]" />
-              <input type="text" placeholder="Delivery Address / Company Building" className="w-full p-4 rounded-xl border border-gray-200 outline-none text-[15px] font-medium placeholder-gray-400 focus:border-[#18202D]" />
             </div>
           </section>
 
-          {/* Section 2: Mobile Network & Payments */}
+          {/* Section 2: Delivery Options */}
           <section>
             <h2 className="text-xl font-bold text-[#94B447] mb-6 flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-[#18202D] text-white flex items-center justify-center text-xs">2</span>
+              Delivery Method
+            </h2>
+            <div className="bg-white rounded-2xl p-6 border border-[#18202D]/10 flex flex-col gap-6">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors ${deliveryMethod === 'delivery' ? 'border-[#18202D] bg-[#f8f9fa]' : 'border-gray-100 hover:border-gray-200'}`}>
+                  <input type="radio" checked={deliveryMethod === 'delivery'} onChange={() => setDeliveryMethod('delivery')} className="w-5 h-5 accent-[#18202D]" />
+                  <span className="font-bold text-[#18202D]">Standard Delivery</span>
+                </label>
+                <label className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors ${deliveryMethod === 'pickup' ? 'border-[#18202D] bg-[#f8f9fa]' : 'border-gray-100 hover:border-gray-200'}`}>
+                  <input type="radio" checked={deliveryMethod === 'pickup'} onChange={() => setDeliveryMethod('pickup')} className="w-5 h-5 accent-[#18202D]" />
+                  <span className="font-bold text-[#18202D]">Self Pickup</span>
+                </label>
+              </div>
+
+              {deliveryMethod === 'delivery' && (
+                <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[13px] font-bold text-[#18202D]">Delivery Zone</label>
+                    <select 
+                      value={deliveryZone} 
+                      onChange={(e) => setDeliveryZone(e.target.value as any)}
+                      className="w-full p-4 rounded-xl border border-gray-200 outline-none text-[15px] font-medium focus:border-[#18202D] bg-white"
+                    >
+                      <option value="dar_es_salaam">Dar es Salaam Region (TZS 5,000)</option>
+                      <option value="mbeya">Mbeya Region (TZS 15,000)</option>
+                      <option value="other">Other Regions (TZS 25,000)</option>
+                    </select>
+                  </div>
+                  <input type="text" placeholder="Full Delivery Address / Landmark" className="w-full p-4 rounded-xl border border-gray-200 outline-none text-[15px] font-medium placeholder-gray-400 focus:border-[#18202D]" />
+                </div>
+              )}
+
+              {deliveryMethod === 'pickup' && (
+                <div className="p-4 bg-yellow-50 text-yellow-800 rounded-xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+                  Please collect your order at our Dar es Salaam branch (Grants Care Building) or Mbeya branch (Mwanjelwa Tunduma Road). You will receive an SMS when the package is ready.
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Section 3: Mobile Network & Payments */}
+          <section>
+            <h2 className="text-xl font-bold text-[#94B447] mb-6 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-[#18202D] text-white flex items-center justify-center text-xs">3</span>
               Payment Method
             </h2>
             
@@ -102,7 +160,7 @@ export default function CheckoutPage() {
                      <div className="absolute top-[-5px] right-[-5px] w-5 h-5 bg-[#18202D] text-white rounded-full flex items-center justify-center text-[10px] z-10">{item.quantity}</div>
                    </div>
                    <div className="flex-1 flex flex-col justify-center">
-                     <h4 className="text-[15px] font-bold text-[#94B447]">{item.name}</h4>
+                     <h4 className="text-[15px] font-bold text-[#94B447] truncate">{item.name}</h4>
                      <p className="text-[13px] font-medium text-[#18202D]">TZS {(item.price).toLocaleString()}</p>
                    </div>
                    <div className="text-[15px] font-bold text-[#94B447] flex items-center">
@@ -110,25 +168,36 @@ export default function CheckoutPage() {
                    </div>
                  </div>
                ))}
+
+               {items.length === 0 && (
+                 <p className="text-sm font-medium text-gray-500 text-center py-4">Your cart is empty.</p>
+               )}
             </div>
 
             <div className="flex flex-col gap-3 font-medium text-[15px] text-[#18202D] mb-8">
               <div className="flex justify-between">
                 <span className="text-[#18202D]">Subtotal</span>
-                <span>{getFormattedTotal()}</span>
+                <span>TZS {subtotal.toLocaleString()}</span>
               </div>
+              
               <div className="flex justify-between">
-                <span className="text-[#18202D]">Shipping (Dar es Salaam)</span>
-                <span>TZS 5,000</span>
+                <span className="text-[#18202D]">
+                  {deliveryMethod === 'delivery' 
+                    ? `Shipping (${deliveryZone.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())})`
+                    : 'Self Pickup'
+                  }
+                </span>
+                <span>{deliveryFee === 0 ? 'Free' : `TZS ${deliveryFee.toLocaleString()}`}</span>
               </div>
+
               <div className="flex justify-between pt-4 border-t border-gray-200 text-xl font-extrabold pb-2">
                 <span>Total</span>
-                <span>TZS {(items.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0) + 5000).toLocaleString()}</span>
+                <span className="text-[#94B447]">TZS {total.toLocaleString()}</span>
               </div>
             </div>
 
             <Link href="/checkout/success">
-              <button className="w-full h-14 bg-[#18202D] text-white font-bold rounded-xl text-[15px] hover:bg-[#94B447] transition-colors shadow-lg flex items-center justify-center gap-2">
+              <button disabled={items.length === 0} className="w-full h-14 bg-[#18202D] text-white font-bold rounded-xl text-[15px] hover:bg-[#94B447] transition-colors shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                 Complete Order
               </button>
             </Link>
