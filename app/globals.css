@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Outfit:wght@100;300;400&display=swap');
 @import "tailwindcss";
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -36,7 +38,11 @@
   --ring: #C9A84C;
 
   --radius: 0.5rem;
+
+  --font-body: 'Outfit', sans-serif;
+  --font-heading: 'DM Sans', sans-serif;
 }
+
 
 @theme inline {
   --color-background: var(--background);

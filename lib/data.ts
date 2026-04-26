@@ -8,6 +8,9 @@ export const supplyProducts = [
     description: 'High-quality A4 copy paper, perfect for all your office printing and copying needs. Ensures smooth operation and professional results every time.',
     isOnSale: false,
     isTopSelling: true,
+    brand: 'Globs-By',
+    rating: 4.8,
+    stockStatus: 'In Stock'
   },
   { 
     id: 2, 
@@ -18,6 +21,9 @@ export const supplyProducts = [
     description: 'Durable mesh document trays to keep your desk organized. Sleek design that fits perfectly in any modern office setting.',
     isOnSale: true,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.5,
+    stockStatus: 'In Stock'
   },
   { 
     id: 3, 
@@ -28,6 +34,9 @@ export const supplyProducts = [
     description: 'Official legal-sized paper for all your formal documentation and contracts. Premium weight and texture for a professional feel.',
     isOnSale: false,
     isTopSelling: true,
+    brand: 'Naserian',
+    rating: 4.9,
+    stockStatus: 'In Stock'
   },
   { 
     id: 4, 
@@ -38,6 +47,9 @@ export const supplyProducts = [
     description: 'High-sensitivity thermal paper rolls for POS systems and cash registers. Clear, long-lasting prints for all your transactions.',
     isOnSale: false,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.2,
+    stockStatus: 'In Stock'
   },
   { 
     id: 5, 
@@ -48,6 +60,9 @@ export const supplyProducts = [
     description: 'Versatile manilla cards for filing, labeling, and creative projects. Strong and durable material that withstands daily handling.',
     isOnSale: true,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.0,
+    stockStatus: 'Limited Stock'
   },
   { 
     id: 6, 
@@ -58,6 +73,9 @@ export const supplyProducts = [
     description: 'High-elasticity rubber bands for all your bundling and organizing needs. Available in various sizes for maximum flexibility.',
     isOnSale: false,
     isTopSelling: false,
+    brand: 'Generic',
+    rating: 3.8,
+    stockStatus: 'In Stock'
   },
   { 
     id: 7, 
@@ -68,6 +86,9 @@ export const supplyProducts = [
     description: 'Precision correction pens for clean and easy white-outs. Fast-drying and easy-to-use for mistake-free documents.',
     isOnSale: false,
     isTopSelling: true,
+    brand: 'Globs-By',
+    rating: 4.7,
+    stockStatus: 'In Stock'
   },
   { 
     id: 8, 
@@ -78,6 +99,9 @@ export const supplyProducts = [
     description: 'Convenient shorthand notebooks for quick notes and meetings. Spiral-bound for easy page flipping and a professional appearance.',
     isOnSale: true,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.3,
+    stockStatus: 'In Stock'
   },
   { 
     id: 9, 
@@ -88,6 +112,9 @@ export const supplyProducts = [
     description: 'Heavy-duty stapler machines for reliable and effortless stapling. Ergonomic design for comfortable use even during high-volume tasks.',
     isOnSale: false,
     isTopSelling: true,
+    brand: 'Stanley',
+    rating: 4.9,
+    stockStatus: 'In Stock'
   },
   { 
     id: 10, 
@@ -98,6 +125,9 @@ export const supplyProducts = [
     description: 'Flexible and durable PVC spring files for efficient document storage. Secure mechanism to keep your papers organized and protected.',
     isOnSale: false,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.1,
+    stockStatus: 'In Stock'
   },
   { 
     id: 11, 
@@ -108,6 +138,9 @@ export const supplyProducts = [
     description: 'High-capacity paper shredder machines for secure document disposal. Quiet operation and durable blades for peace of mind.',
     isOnSale: true,
     isTopSelling: false,
+    brand: 'HP',
+    rating: 4.6,
+    stockStatus: 'Limited Stock'
   },
   { 
     id: 12, 
@@ -118,6 +151,9 @@ export const supplyProducts = [
     description: 'Premium cartridges and toners for crisp and vibrant prints. Compatible with a wide range of office printers for consistent performance.',
     isOnSale: false,
     isTopSelling: true,
+    brand: 'Canon',
+    rating: 4.8,
+    stockStatus: 'In Stock'
   },
   { 
     id: 13, 
@@ -128,6 +164,9 @@ export const supplyProducts = [
     description: 'Bulk high-quality A4 copy paper.',
     isOnSale: true,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.9,
+    stockStatus: 'In Stock'
   },
   { 
     id: 14, 
@@ -138,6 +177,9 @@ export const supplyProducts = [
     description: 'Premium mesh document trays.',
     isOnSale: true,
     isTopSelling: false,
+    brand: 'Executive',
+    rating: 4.7,
+    stockStatus: 'In Stock'
   },
   { 
     id: 15, 
@@ -148,6 +190,9 @@ export const supplyProducts = [
     description: 'Affordable legal-sized paper.',
     isOnSale: false,
     isTopSelling: true,
+    brand: 'Naserian',
+    rating: 4.4,
+    stockStatus: 'In Stock'
   },
   { 
     id: 16, 
@@ -158,6 +203,9 @@ export const supplyProducts = [
     description: 'High-sensitivity thermal paper rolls in bulk.',
     isOnSale: false,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.5,
+    stockStatus: 'In Stock'
   },
   { 
     id: 17, 
@@ -168,6 +216,9 @@ export const supplyProducts = [
     description: 'Versatile colored manilla cards.',
     isOnSale: false,
     isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.2,
+    stockStatus: 'In Stock'
   },
   { 
     id: 18, 
@@ -178,5 +229,242 @@ export const supplyProducts = [
     description: 'Extra thick rubber bands.',
     isOnSale: false,
     isTopSelling: false,
+    brand: 'Generic',
+    rating: 4.0,
+    stockStatus: 'In Stock'
   },
+  { 
+    id: 19, 
+    name: 'Standard Staple Pins', 
+    price: 'TZS 2,500', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/9. Stapler Machines.webp',
+    description: 'High quality standard staple pins.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Stanley',
+    rating: 4.3,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 20, 
+    name: 'A3 Copy Paper', 
+    price: 'TZS 85,000', 
+    category: 'Paper & Books', 
+    image: '/logo/SUPPLY/1. A4 Copy Paper.jpeg',
+    description: 'A3 size premium copy paper for large prints.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.6,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 21, 
+    name: 'Desk Organizers', 
+    price: 'TZS 25,000', 
+    category: 'Organizers', 
+    image: '/logo/SUPPLY/2. Mesh Office Document Trays.jpeg',
+    description: 'Keep your pens and stationary organized.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.4,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 22, 
+    name: 'Whiteboard Markers', 
+    price: 'TZS 15,000', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/7. Correction Pens.webp',
+    description: 'Set of 4 colored whiteboard markers.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.1,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 23, 
+    name: 'Sticky Notes', 
+    price: 'TZS 4,000', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/8. Shorthand Notebooks.webp',
+    description: 'Bright colored sticky notes.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.5,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 24, 
+    name: 'File Folders', 
+    price: 'TZS 10,000', 
+    category: 'Organizers', 
+    image: '/logo/SUPPLY/10. PVC Spring Files.jpeg',
+    description: 'Pack of 10 file folders.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.0,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 25, 
+    name: 'Office Scissors', 
+    price: 'TZS 8,500', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/6. Rubber Bands.webp',
+    description: 'Sharp, durable office scissors.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.3,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 26, 
+    name: 'Binder Clips', 
+    price: 'TZS 5,000', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/6. Rubber Bands.webp',
+    description: 'Assorted sizes binder clips.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.2,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 27, 
+    name: 'Calculator', 
+    price: 'TZS 35,000', 
+    category: 'Hardware', 
+    image: '/logo/SUPPLY/11. Paper Shredder Machines.jpeg',
+    description: '12-digit desktop calculator.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'HP',
+    rating: 4.7,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 28, 
+    name: 'Punching Machine', 
+    price: 'TZS 18,000', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/9. Stapler Machines.webp',
+    description: 'Heavy duty 2-hole puncher.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.4,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 29, 
+    name: 'Notice Board Pins', 
+    price: 'TZS 3,000', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/6. Rubber Bands.webp',
+    description: 'Box of colored push pins.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.1,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 30, 
+    name: 'Clear Tape', 
+    price: 'TZS 2,000', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/4. Thermal Paper Rolls .jpeg',
+    description: 'Standard clear adhesive tape.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.0,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 31, 
+    name: 'Rulers Set', 
+    price: 'TZS 3,500', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/7. Correction Pens.webp',
+    description: 'Set of plastic and metal rulers.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.3,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 32, 
+    name: 'Envelopes C4', 
+    price: 'TZS 15,000', 
+    category: 'Paper & Books', 
+    image: '/logo/SUPPLY/3. Legal Papers.webp',
+    description: 'Pack of 50 C4 white envelopes.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.5,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 33, 
+    name: 'Laser Printer Toner', 
+    price: 'TZS 120,000', 
+    category: 'Hardware', 
+    image: '/logo/SUPPLY/12. Cartridges & Toners.png',
+    description: 'Black toner cartridge for laser printers.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Canon',
+    rating: 4.9,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 34, 
+    name: 'Executive Pen Set', 
+    price: 'TZS 45,000', 
+    category: 'Stationery', 
+    image: '/logo/SUPPLY/7. Correction Pens.webp',
+    description: 'Premium executive pen set in a box.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Parker',
+    rating: 5.0,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 35, 
+    name: 'Magazine Holders', 
+    price: 'TZS 12,000', 
+    category: 'Organizers', 
+    image: '/logo/SUPPLY/2. Mesh Office Document Trays.jpeg',
+    description: 'Plastic magazine and file holders.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Globs-By',
+    rating: 4.2,
+    stockStatus: 'In Stock'
+  },
+  { 
+    id: 36, 
+    name: 'Paper Clips', 
+    price: 'TZS 1,500', 
+    category: 'Supplies', 
+    image: '/logo/SUPPLY/6. Rubber Bands.webp',
+    description: 'Box of 100 giant paper clips.',
+    isOnSale: false,
+    isTopSelling: false,
+    brand: 'Generic',
+    rating: 4.0,
+    stockStatus: 'In Stock'
+  }
 ];

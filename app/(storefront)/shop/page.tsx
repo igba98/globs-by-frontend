@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { supplyProducts } from '@/lib/data';
@@ -11,9 +12,9 @@ const categories = ['All', 'Paper & Books', 'Organizers', 'Supplies', 'Stationer
 function ProductGrid({ products }: { products: typeof supplyProducts }) {
   if (products.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-3 sm:gap-4 px-4 w-full max-w-[1600px] mx-auto">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 px-4 w-full max-w-[1600px] mx-auto">
       {products.map((pkg) => (
-        <Link href={`/product/${pkg.id}`} key={pkg.id} className="flex-1 min-w-[160px] sm:min-w-[200px] md:min-w-[220px] bg-white rounded-2xl aspect-[3/4] relative flex flex-col items-center group overflow-hidden drop-shadow-sm hover:-translate-y-1 transition-transform border border-gray-100 p-3 sm:p-4 hover:shadow-md">
+        <Link href={`/product/${pkg.id}`} key={pkg.id} className="bg-white rounded-2xl aspect-[3/4] relative flex flex-col items-center group overflow-hidden drop-shadow-sm hover:-translate-y-1 transition-transform border border-gray-100 p-3 sm:p-4 hover:shadow-md">
           
           {/* Top Pill / White Header Tag */}
           <div className="absolute top-0 left-0 w-full bg-white/95 backdrop-blur-sm px-2 py-1.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] text-[10px] sm:text-xs font-bold text-[#18202D] z-10 text-center truncate border-b border-gray-50 flex items-center justify-center gap-1">
@@ -37,25 +38,46 @@ function ProductGrid({ products }: { products: typeof supplyProducts }) {
   );
 }
 
-export default function ShopArchivePage() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [loadingMore, setLoadingMore] = useState('');
-
-  const handleLoadMore = () => {
-    setLoadingMore('loading');
-    setTimeout(() => {
-      setLoadingMore('done');
-      setTimeout(() => setLoadingMore(''), 2000);
-    }, 800);
-  };
+function ShopArchiveContent() {
+  const searchParams = useSearchParams();
+  const q = searchParams.get('q') || '';
   
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState(q);
+  const [loadingMore, setLoadingMore] = useState('');
+  const [visibleCount, setVisibleCount] = useState(24);
+
+  useEffect(() => {
+    setSearchQuery(q);
+  }, [q]);
+
+  const searchedProducts = supplyProducts.filter(p => 
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    p.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const filteredProducts = activeCategory === 'All' 
-    ? supplyProducts 
-    : supplyProducts.filter(p => p.category === activeCategory);
+    ? searchedProducts 
+    : searchedProducts.filter(p => p.category === activeCategory);
 
   const onSaleProducts = filteredProducts.filter(p => p.isOnSale);
   const topSellingProducts = filteredProducts.filter(p => p.isTopSelling && !p.isOnSale);
   const regularProducts = filteredProducts.filter(p => !p.isOnSale && !p.isTopSelling);
+
+  const handleLoadMore = () => {
+    setLoadingMore('loading');
+    setTimeout(() => {
+      if (visibleCount + 24 >= regularProducts.length) {
+        setVisibleCount(regularProducts.length);
+        setLoadingMore('done');
+      } else {
+        setVisibleCount(prev => prev + 24);
+        setLoadingMore('');
+      }
+    }, 800);
+  };
+
+  const displayedRegularProducts = regularProducts.slice(0, visibleCount);
 
   return (
     <div className="w-full flex flex-col items-center space-y-12 pb-20 pt-4">
@@ -63,13 +85,19 @@ export default function ShopArchivePage() {
       {/* 1. Page Header Bento */}
       <section className="w-full bg-[#f8f9fa] rounded-[2rem] py-16 px-6 sm:px-12 text-center flex flex-col items-center border border-[#18202D]/5 max-w-[1600px] mx-auto">
          <h1 className="text-4xl font-extrabold font-heading text-[#94B447] mb-4">Official Shop Directory</h1>
-         <p className="text-[#18202D] max-w-md">Browse our catalogue of premium B2B corporate supplies and institutional inventory.</p>
+         <p className="text-[#18202D] max-w-md mb-8">Browse our catalogue of premium B2B corporate supplies and institutional inventory.</p>
+         
+
          
          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-10">
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setVisibleCount(24);
+                  setLoadingMore('');
+                }}
                 className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-[13px] font-bold transition-all ${
                   activeCategory === cat 
                     ? 'bg-[#18202D] text-white shadow-md' 
@@ -133,30 +161,44 @@ export default function ShopArchivePage() {
          )}
 
          {/* Section 3: All Other Products */}
-         {regularProducts.length > 0 && (
+         {displayedRegularProducts.length > 0 && (
            <div className="w-full mt-6">
-             <div className="max-w-[1600px] mx-auto px-4 mb-6">
-               <h2 className="text-2xl font-bold font-heading text-[#94B447]">All Supplies</h2>
+             <div className="max-w-[1600px] mx-auto px-4 mb-6 flex justify-between items-end">
+               <div>
+                 <h2 className="text-2xl font-bold font-heading text-[#94B447]">All Supplies</h2>
+                 <p className="text-sm text-gray-500">Browse our extended catalogue of daily essentials.</p>
+               </div>
+               <Link href="/shop/all-supplies" className="text-sm font-bold text-[#18202D] hover:text-[#94B447] transition-colors flex items-center gap-2">
+                 View Full Page
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+               </Link>
              </div>
-             <ProductGrid products={regularProducts} />
+             <ProductGrid products={displayedRegularProducts} />
            </div>
          )}
 
-         {/* Load More Button */}
-         {filteredProducts.length > 0 && (
+         {/* Load More Button -> Link to All Supplies */}
+         {regularProducts.length > visibleCount && (
            <div className="w-full flex justify-center mt-8">
-              <button 
-                onClick={handleLoadMore}
-                className="px-10 py-4 bg-white rounded-full text-[#18202D] font-bold text-sm hover:bg-[#18202D] hover:text-white border border-gray-200 transition-all shadow-sm flex items-center gap-2 min-w-[240px] justify-center"
+              <Link 
+                href="/shop/all-supplies"
+                className="px-10 py-4 bg-[#18202D] rounded-full text-white font-bold text-sm hover:bg-[#94B447] transition-all shadow-md flex items-center gap-2 min-w-[240px] justify-center"
               >
-                {loadingMore === 'loading' && <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>}
-                {loadingMore === '' && 'Discover More Inventory'}
-                {loadingMore === 'done' && 'All Items Loaded!'}
-              </button>
+                Explore Full Inventory
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </Link>
            </div>
          )}
 
       </section>
     </div>
+  );
+}
+
+export default function ShopArchivePage() {
+  return (
+    <Suspense fallback={<div className="w-full py-20 text-center">Loading catalogue...</div>}>
+      <ShopArchiveContent />
+    </Suspense>
   );
 }

@@ -3,15 +3,17 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { useCartStore } from '@/store/cartStore';
-import BrandsStrip from '@/components/storefront/brands/BrandsStrip';
+import { usePathname, useRouter } from "next/navigation";
+import { useCartStore } from "@/store/cartStore";
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { isOpen, closeCart, openCart, items, getFormattedTotal } = useCartStore();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -39,13 +41,17 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
     <div className="flex flex-col min-h-screen bg-white font-body selection:bg-[#94B447] selection:text-white">
       
       {/* 1. Global Announcement Bar (Black Top Layer) */}
-      <div className="bg-[#18202D] text-white text-[13px] font-medium py-3 px-4 text-center relative z-50 flex items-center justify-center overflow-hidden h-[44px]">
-        <div className="flex gap-8 whitespace-nowrap opacity-80 animate-[marquee_20s_linear_infinite]">
-          <span>Transform Your Workspace – Save 30% Today!</span>
-          <span>Transform Your Workspace – Save 30% Today!</span>
-          <span>Transform Your Workspace – Save 30% Today!</span>
-          <span>Transform Your Workspace – Save 30% Today!</span>
-          <span>Transform Your Workspace – Save 30% Today!</span>
+      <div className="bg-[#18202D] text-white text-[15px] font-medium py-3 px-4 text-center relative z-50 flex items-center justify-center overflow-hidden h-[48px]">
+        <div className="flex gap-12 whitespace-nowrap opacity-80 animate-[marquee_30s_linear_infinite]">
+          <span>Globsby Stationary - For Top Quality Supplies</span>
+          <span>Dar es Salaam office - Grants Care Building (0743 483 769)</span>
+          <span>Mbeya office - Mwanjelwa Tunduma Road (0769 017 608)</span>
+          <span>Order from us and pay in this website!</span>
+          {/* Repeating for a smoother loop */}
+          <span>Globsby Stationary - For Top Quality Supplies</span>
+          <span>Dar es Salaam office - Grants Care Building (0743 483 769)</span>
+          <span>Mbeya office - Mwanjelwa Tunduma Road (0769 017 608)</span>
+          <span>Order from us and pay in this website!</span>
         </div>
       </div>
 
@@ -66,6 +72,43 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
           </nav>
 
           <div className="flex items-center gap-4">
+             {/* Global Search Bar (Toggleable) */}
+             <div className={`flex items-center transition-all duration-300 overflow-hidden ${isSearchOpen ? 'w-[200px] sm:w-[300px] opacity-100' : 'w-0 opacity-0'}`}>
+               <form 
+                 onSubmit={(e) => {
+                   e.preventDefault();
+                   if (searchQuery.trim()) {
+                     router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+                   }
+                   setIsSearchOpen(false);
+                 }}
+                 className="relative w-full"
+               >
+                 <input 
+                   type="text" 
+                   placeholder="Search items..." 
+                   value={searchQuery}
+                   autoFocus
+                   onChange={(e) => setSearchQuery(e.target.value)}
+                   className="w-full px-4 py-2 bg-gray-100 rounded-full text-sm outline-none border border-transparent focus:border-[#94B447] text-[#18202D]"
+                 />
+               </form>
+             </div>
+
+             <button 
+               onClick={() => setIsSearchOpen(!isSearchOpen)} 
+               className="flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors text-[#18202D]"
+               title="Search"
+             >
+               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                 {isSearchOpen ? (
+                   <path d="M18 6 6 18M6 6l12 12"/>
+                 ) : (
+                   <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>
+                 )}
+               </svg>
+             </button>
+
              <button onClick={() => setIsMenuOpen(true)} className="flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors text-[#18202D]">
                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
              </button>
@@ -119,10 +162,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         </div>
       </main>
 
-      {/* Conditional Brands Strip */}
-      {(pathname === '/' || pathname === '/shop') && (
-        <BrandsStrip />
-      )}
+
 
       {/* Dark Footer */}
       <footer className="bg-[#94B447] text-white py-16 mt-20 px-4 sm:px-6 lg:px-12 rounded-t-[2.5rem] md:mx-6 mb-6">
