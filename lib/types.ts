@@ -139,3 +139,108 @@ export interface Paginated<T> {
   data: T[];
   meta: Meta;
 }
+
+// ---------------------------------------------------------------------------
+// Admin / backoffice types
+// ---------------------------------------------------------------------------
+
+export interface AdminOrderItem {
+  id?: string;
+  productId?: string;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal: number;
+}
+
+export interface AdminOrder {
+  id: string;
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  deliveryMethod: string;
+  deliveryZoneId?: string | null;
+  deliveryZone?: { id: string; name: string; region: string; fee: number } | null;
+  deliveryAddress?: string | null;
+  paymentMethod: string;
+  paymentStatus: string;
+  orderStatus: string;
+  subtotal: number;
+  deliveryFee: number;
+  total: number;
+  notes?: string | null;
+  items: AdminOrderItem[];
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface DashboardLowStockItem {
+  id: string;
+  name: string;
+  slug: string;
+  stock: number;
+}
+
+export interface DashboardStatusBreakdown {
+  status: string;
+  count: number;
+}
+
+export interface DashboardRecentOrder {
+  orderNumber: string;
+  customerName: string;
+  total: number;
+  orderStatus: string;
+  paymentStatus: string;
+  createdAt: string;
+}
+
+export interface DashboardTopProduct {
+  productName: string;
+  quantitySold: number;
+  revenue: number;
+}
+
+export interface DashboardStats {
+  revenue: number;
+  paidOrders: number;
+  totalOrders: number;
+  customers: number;
+  avgOrderValue: number;
+  lowStock: {
+    threshold: number;
+    count: number;
+    items: DashboardLowStockItem[];
+  };
+  statusBreakdown: DashboardStatusBreakdown[];
+  recentOrders: DashboardRecentOrder[];
+  topProducts: DashboardTopProduct[];
+}
+
+export interface PresignResponse {
+  uploadUrl: string;
+  publicUrl: string;
+  key: string;
+}
+
+export interface AdminProductImageInput {
+  url: string;
+  alt?: string;
+  sortOrder?: number;
+}
+
+export interface AdminProductPayload {
+  name: string;
+  description?: string;
+  price: number;
+  stock?: number;
+  categoryId: string;
+  brandId?: string;
+  isOnSale?: boolean;
+  isTopSelling?: boolean;
+  isPublished?: boolean;
+  sku?: string;
+  compareAtPrice?: number;
+  images?: AdminProductImageInput[];
+}

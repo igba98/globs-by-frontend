@@ -1,4 +1,14 @@
 import { API_BASE, ApiError } from './api';
+import type {
+  AdminOrder,
+  AdminProductPayload,
+  DashboardStats,
+  Meta,
+  Paginated,
+  PresignResponse,
+  Product,
+  SiteSettings,
+} from './types';
 
 const STORAGE_KEY = 'gb-admin';
 
@@ -175,4 +185,153 @@ export async function adminFetch<T>(
   }
 
   return { data: body.data as T, meta: body.meta };
+}
+
+/**
+ * Returns true when the given error means the admin session is gone
+ * (expired refresh cookie, missing/invalid token, etc). Callers should
+ * redirect to /admin/login when this is true — adminFetch has already
+ * cleared the stored session.
+ */
+export function isSessionExpiredError(err: unknown): boolean {
+  return err instanceof ApiError && err.code === 'SESSION_EXPIRED';
+}
+
+function buildQuery(params?: Record<string, string | number | boolean | undefined>): string {
+  if (!params) return '';
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === '') continue;
+    search.set(key, String(value));
+  }
+  const qs = search.toString();
+  return qs ? `?${qs}` : '';
+}
+
+// ---------------------------------------------------------------------------
+// Dashboard
+// ---------------------------------------------------------------------------
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const { data } = await adminFetch<DashboardStats>('/api/admin/dashboard/stats');
+  return data;
+}
+
+// ---------------------------------------------------------------------------
+// Products
+// ---------------------------------------------------------------------------
+
+export async function getAdminProducts(params?: {
+  q?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
+}): Promise<Paginated<Product>> {
+  const qs = buildQuery(params);
+  const { data, meta } = await adminFetch<Product[]>(`/api/admin/products${qs}`);
+  return { data, meta: meta as Meta };
+}
+
+export async function getAdminProduct(id: string): Promise<Product> {
+  const { data } = await adminFetch<Product>(`/api/admin/products/${id}`);
+  return data;
+}
+
+export async function createAdminProduct(payload: AdminProductPayload): Promise<Product> {
+  const { data } = await adminFetch<Product>('/api/admin/products', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return data;
+}
+
+export async function updateAdminProduct(
+  id: string,
+  payload: Partial<AdminProductPayload>,
+): Promise<Product> {
+  const { data } = await adminFetch<Product>(`/api/admin/products/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  return data;
+}
+
+export async function deleteAdminProduct(id: string): Promise<void> {
+  await adminFetch<unknown>(`/api/admin/products/${id}`, { method: 'DELETE' });
+}
+
+// ---------------------------------------------------------------------------
+// Uploads
+// ---------------------------------------------------------------------------
+
+export async function presignUpload(payload: {
+  filename: string;
+  contentType: string;
+  folder: string;
+}): Promise<PresignResponse> {
+  const { data } = await adminFetch<PresignResponse>('/api/admin/uploads/presign', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return data;
+}
+
+export async function uploadFileToPresignedUrl(uploadUrl: string, file: File): Promise<void> {
+  const res = await fetch(uploadUrl, {
+    method: 'PUT',
+    body: file,
+    headers: { 'Content-Type': file.type },
+  });
+  if (!res.ok) {
+    throw new Error('Upload failed — please try a different image.');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Orders
+// ---------------------------------------------------------------------------
+
+export async function getAdminOrders(params?: {
+  status?: string;
+  paymentStatus?: string;
+  q?: string;
+  page?: number;
+  limit?: number;
+}): Promise<Paginated<AdminOrder>> {
+  const qs = buildQuery(params);
+  const { data, meta } = await adminFetch<AdminOrder[]>(`/api/admin/orders${qs}`);
+  return { data, meta: meta as Meta };
+}
+
+export async function getAdminOrder(id: string): Promise<AdminOrder> {
+  const { data } = await adminFetch<AdminOrder>(`/api/admin/orders/${id}`);
+  return data;
+}
+
+export async function updateAdminOrder(
+  id: string,
+  payload: { orderStatus?: string; paymentStatus?: string },
+): Promise<AdminOrder> {
+  const { data } = await adminFetch<AdminOrder>(`/api/admin/orders/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  return data;
+}
+
+// ---------------------------------------------------------------------------
+// Settings
+// ---------------------------------------------------------------------------
+
+export async function getAdminSettings(): Promise<SiteSettings> {
+  const { data } = await adminFetch<SiteSettings>('/api/admin/settings');
+  return data;
+}
+
+export async function updateAdminSettings(payload: Partial<SiteSettings>): Promise<SiteSettings> {
+  const { data } = await adminFetch<SiteSettings>('/api/admin/settings', {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  return data;
 }
