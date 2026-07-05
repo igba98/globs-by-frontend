@@ -17,14 +17,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO(task3): CartContext is still keyed by product name and stores price
-    // as a formatted string. Once the cart is consolidated onto numeric
-    // price + productId/slug (Task 3), pass { productId: product.id, slug: product.slug,
-    // name: product.name, price: product.price, image } directly.
     addToCart({
+      productId: product.id,
+      slug: product.slug,
       name: product.name,
-      price: formatTzs(product.price),
-      category: product.category.name,
+      price: product.price,
       image: product.images[0]?.url ?? '',
     });
   };

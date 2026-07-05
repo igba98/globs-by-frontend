@@ -1,76 +1,132 @@
-'use client';
-
-import { use } from 'react';
 import Link from 'next/link';
-import { CheckCircle, Clock, Truck, Shield } from '@/components/icons';
+import { notFound } from 'next/navigation';
+import { ApiError, trackOrder } from '@/lib/api';
+import { formatTzs } from '@/lib/format';
+import { CheckCircle } from '@/components/icons';
 
-const STAGES = [
-  { id: 1, name: 'Order Placed', description: 'We have received your order securely.', icon: Shield, status: 'completed' },
-  { id: 2, name: 'Payment Confirmed', description: 'Mobile payment verified.', icon: CheckCircle, status: 'completed' },
-  { id: 3, name: 'Processing', description: 'We are preparing your items for shipment.', icon: Clock, status: 'active' },
-  { id: 4, name: 'In Transit', description: 'Your order is on the way to your address.', icon: Truck, status: 'pending' },
-  { id: 5, name: 'Delivered', description: 'Order successfully delivered.', icon: CheckCircle, status: 'pending' }
-];
+function labelize(value: string): string {
+  return value
+    .toLowerCase()
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
 
-export default function TrackingPage({ params }: { params: Promise<{ id: string }> }) {
-  const unwrappedParams = use(params);
-  const orderId = unwrappedParams.id;
+function orderStatusClasses(status: string): string {
+  switch (status) {
+    case 'DELIVERED':
+      return 'bg-green-50 text-green-700 border border-green-200';
+    case 'CANCELLED':
+      return 'bg-red-50 text-red-700 border border-red-200';
+    case 'SHIPPED':
+    case 'PROCESSING':
+      return 'bg-blue-50 text-blue-700 border border-blue-200';
+    default:
+      return 'bg-gray-100 text-[#18202D] border border-gray-200';
+  }
+}
+
+function paymentStatusClasses(status: string): string {
+  switch (status) {
+    case 'PAID':
+      return 'bg-green-50 text-green-700 border border-green-200';
+    case 'FAILED':
+    case 'REFUNDED':
+      return 'bg-red-50 text-red-700 border border-red-200';
+    default:
+      return 'bg-yellow-50 text-yellow-800 border border-yellow-200';
+  }
+}
+
+export default async function TrackingPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const orderNumber = decodeURIComponent(id);
+
+  let order;
+  try {
+    order = await trackOrder(orderNumber);
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 404) notFound();
+    throw e;
+  }
+
+  const createdAt = new Date(order.createdAt).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
 
   return (
     <div className="w-full min-h-screen bg-white pb-24 pt-32 sm:pt-40">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6">
-        
+
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-green-50 text-green-600 rounded-full mb-6">
             <CheckCircle className="w-10 h-10" />
           </div>
-          <h1 className="font-heading text-4xl text-[#94B447] font-medium mb-4">Order Successfully Placed!</h1>
+          <h1 className="font-heading text-4xl text-[#94B447] font-medium mb-4">Track Your Order</h1>
           <p className="text-[#18202D] text-lg">
-            Thank you for shopping with Globs-By. Your order <span className="font-bold text-[#94B447]">{orderId}</span> is now being processed.
+            Order <span className="font-bold text-[#94B447]">{order.orderNumber}</span> placed on {createdAt}.
           </p>
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <span className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${orderStatusClasses(order.orderStatus)}`}>
+              {labelize(order.orderStatus)}
+            </span>
+            <span className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${paymentStatusClasses(order.paymentStatus)}`}>
+              Payment: {labelize(order.paymentStatus)}
+            </span>
+          </div>
         </div>
 
-        {/* Tracking Stepper */}
+        {/* Order Details */}
         <div className="bg-[#f8f9fa] rounded-[3rem] p-10 sm:p-16 border border-gray-100">
-           <h2 className="font-heading text-2xl text-[#94B447] mb-10">Live Tracking</h2>
-           
-           <div className="relative">
-              {/* Vertical line connecting steps */}
-              <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-gray-200" />
-              
-              <div className="space-y-12">
-                {STAGES.map((stage, index) => {
-                  const Icon = stage.icon;
-                  return (
-                    <div key={stage.id} className="relative flex items-start gap-6">
-                      
-                      {/* Node circle */}
-                      <div className={`relative z-10 w-16 h-16 rounded-full flex flex-shrink-0 items-center justify-center transition-colors shadow-sm
-                        ${stage.status === 'completed' ? 'bg-primary text-white scale-100' : 
-                          stage.status === 'active' ? 'bg-white border-[3px] border-primary text-primary scale-110 shadow-md' : 
-                          'bg-white border-2 border-gray-200 text-[#18202D]'}
-                      `}>
-                         <Icon className="w-6 h-6" />
-                      </div>
+          <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+            <h2 className="font-heading text-2xl text-[#94B447]">Order Details</h2>
+            <span className="text-sm font-bold text-[#18202D] bg-white border border-gray-200 px-4 py-2 rounded-full">
+              {order.deliveryMethod === 'PICKUP' ? 'Self Pickup' : 'Delivery'}
+            </span>
+          </div>
 
-                      {/* Content */}
-                      <div className={`pt-3 ${stage.status === 'pending' ? 'opacity-40' : 'opacity-100'}`}>
-                        <h4 className="font-heading text-xl text-[#94B447]">{stage.name}</h4>
-                        <p className="text-sm font-medium text-[#18202D] mt-1">{stage.description}</p>
-                        
-                        {stage.status === 'active' && (
-                          <div className="mt-4 inline-block bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider">
-                            Current Stage
-                          </div>
-                        )}
-                      </div>
+          {/* Items Table */}
+          <div className="overflow-x-auto mb-10">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-gray-200 text-[#18202D] text-xs font-bold uppercase tracking-wide">
+                  <th className="py-3 pr-4">Item</th>
+                  <th className="py-3 pr-4 text-center">Qty</th>
+                  <th className="py-3 pr-4 text-right">Unit Price</th>
+                  <th className="py-3 text-right">Line Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order.items.map((item, idx) => (
+                  <tr key={idx} className="border-b border-gray-100">
+                    <td className="py-4 pr-4 font-semibold text-[#94B447]">{item.productName}</td>
+                    <td className="py-4 pr-4 text-center text-[#18202D] font-medium">{item.quantity}</td>
+                    <td className="py-4 pr-4 text-right text-[#18202D] font-medium">{formatTzs(item.unitPrice)}</td>
+                    <td className="py-4 text-right text-[#18202D] font-bold">{formatTzs(item.lineTotal)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-                    </div>
-                  );
-                })}
-              </div>
-           </div>
+          {/* Totals */}
+          <div className="flex flex-col gap-3 font-medium text-[15px] text-[#18202D] max-w-sm ml-auto">
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>{formatTzs(order.subtotal)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Delivery Fee</span>
+              <span>{order.deliveryFee === 0 ? 'Free' : formatTzs(order.deliveryFee)}</span>
+            </div>
+            <div className="flex justify-between pt-4 border-t border-gray-200 text-xl font-extrabold pb-2">
+              <span>Total</span>
+              <span className="text-[#94B447]">{formatTzs(order.total)}</span>
+            </div>
+          </div>
         </div>
 
         <div className="mt-12 text-center">

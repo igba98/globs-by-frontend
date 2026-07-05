@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from "next/navigation";
-import { useCartStore } from "@/store/cartStore";
+import { useCart } from "@/components/storefront/cart/CartContext";
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { isOpen, closeCart, openCart, items, getFormattedTotal } = useCartStore();
+  const { cartCount, setIsCartOpen } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -136,15 +136,15 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
               Shop
             </Link>
-            <button 
+            <button
               onClick={() => {
                 setIsMenuOpen(false);
-                openCart();
-              }} 
+                setIsCartOpen(true);
+              }}
               className="hover:text-[#94B447] transition-colors flex items-center gap-4"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              Cart <span className="text-xl bg-[#94B447] text-white px-3 py-1 rounded-full">{items.length}</span>
+              Cart <span className="text-xl bg-[#94B447] text-white px-3 py-1 rounded-full">{cartCount}</span>
             </button>
             <div className="w-16 h-px bg-gray-200 mt-2"></div>
             <Link href="/admin/customers" onClick={() => setIsMenuOpen(false)} className="hover:text-[#94B447] transition-colors flex items-center gap-3 text-[#18202D] opacity-80 text-2xl font-bold">
@@ -258,73 +258,9 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         </div>
       </footer>
 
-      {/* Center Modal Cart Mockup (Havinic Style) */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={closeCart}></div>
-          
-          <div className="relative w-full max-w-[480px] bg-white rounded-3xl shadow-2xl flex flex-col animate-in zoom-in-95 duration-200 overflow-hidden mx-4">
-             {/* Header */}
-             <div className="px-8 py-6 flex justify-between items-center border-b border-gray-100">
-                <h2 className="text-2xl font-medium font-heading text-[#94B447]">Your Cart</h2>
-                <button onClick={closeCart} className="text-[#18202D] hover:text-[#18202D] transition-colors p-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-             </div>
-             
-             {/* Cart Items List */}
-             <div className="p-8 pb-4 flex flex-col gap-6 max-h-[40vh] overflow-y-auto">
-                
-                {items.length === 0 ? (
-                  <div className="text-center py-8 text-[#18202D] font-medium">Your cart is currently empty.</div>
-                ) : (
-                  items.map((item: any) => (
-                    <div key={item.id} className="flex items-center gap-6">
-                      {/* Thumbnail */}
-                      <div className="w-16 h-16 bg-[#f8f9fa] rounded-xl relative overflow-hidden flex-shrink-0">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" />
-                      </div>
-                      
-                      {/* Details */}
-                      <div className="flex-1">
-                         <h4 className="text-[17px] font-medium text-[#94B447] truncate w-40 sm:w-auto">{item.name}</h4>
-                         <p className="text-[13px] text-[#18202D] mt-1">TZS {(item.price).toLocaleString()}</p>
-                         <button onClick={() => useCartStore.getState().removeItem(item.id)} className="text-[12px] text-[#18202D] hover:text-red-500 transition-colors mt-2 font-medium">Remove</button>
-                      </div>
-                      
-                      {/* Quantity Input */}
-                      <div className="w-[60px]">
-                        <input 
-                          type="number" 
-                          min="1" 
-                          readOnly
-                          value={item.quantity}
-                          className="w-full h-10 border border-gray-200 rounded text-center text-sm outline-none focus:border-[#18202D] text-[#18202D] font-medium bg-transparent"
-                        />
-                      </div>
-                    </div>
-                  ))
-                )}
-
-             </div>
-
-             {/* Footer Totals */}
-             <div className="p-8 pt-4 flex flex-col border-t border-gray-50">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[19px] font-medium text-[#18202D]">Subtotal</span>
-                  <span className="text-[19px] font-medium text-[#18202D]">{getFormattedTotal()}</span>
-                </div>
-                
-                <Link href="/checkout" onClick={closeCart}>
-                  <button disabled={items.length === 0} className="w-full h-14 bg-black text-white font-medium rounded text-[15px] hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                    Continue to Checkout
-                  </button>
-                </Link>
-             </div>
-             
-          </div>
-        </div>
-      )}
+      {/* Cart modal is mounted once at the root layout (CartModal reads the
+          same CartContext), so this segment layout doesn't render its own
+          copy — avoids two competing cart UIs. */}
 
       {/* Simple marquee animation for tailwind config if missing */}
       <style dangerouslySetInnerHTML={{__html: `
