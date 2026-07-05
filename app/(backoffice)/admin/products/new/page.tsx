@@ -140,18 +140,26 @@ export default function ProductCreationPage() {
       return;
     }
 
+    // In edit mode, an emptied optional field must be sent explicitly (null or '')
+    // so the backend clears it — omitting the key (undefined) leaves the old value
+    // in place, since JSON.stringify drops undefined keys from the PATCH body.
+    // In create mode, omitting empty optionals is correct (nothing to clear).
     const payload: AdminProductPayload = {
       name: name.trim(),
-      description: description.trim() || undefined,
+      description: isEdit ? description.trim() : description.trim() || undefined,
       price,
       stock: stockInput ? digitsToNumber(stockInput) : undefined,
       categoryId,
-      brandId: brandId || undefined,
+      brandId: isEdit ? brandId || null : brandId || undefined,
       isOnSale,
       isTopSelling,
       isPublished,
-      sku: sku.trim() || undefined,
-      compareAtPrice: compareAtPriceInput ? digitsToNumber(compareAtPriceInput) : undefined,
+      sku: isEdit ? sku.trim() : sku.trim() || undefined,
+      compareAtPrice: compareAtPriceInput
+        ? digitsToNumber(compareAtPriceInput)
+        : isEdit
+          ? null
+          : undefined,
     };
 
     if (!isEdit || imagesChanged) {

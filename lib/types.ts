@@ -236,11 +236,11 @@ export interface AdminProductPayload {
   price: number;
   stock?: number;
   categoryId: string;
-  brandId?: string;
+  brandId?: string | null;
   isOnSale?: boolean;
   isTopSelling?: boolean;
   isPublished?: boolean;
   sku?: string;
-  compareAtPrice?: number;
+  compareAtPrice?: number | null;
   images?: AdminProductImageInput[];
 }
