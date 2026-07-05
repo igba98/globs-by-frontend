@@ -50,7 +50,7 @@ function AllSuppliesGrid({ products }: { products: Product[] }) {
             <div className="w-full mt-auto text-center flex flex-col items-center">
               <div className="text-[10px] uppercase tracking-wider font-bold text-gray-400 mb-0.5">{product.category.name}</div>
               <div className="text-sm sm:text-base font-extrabold text-[#94B447]">{formatTzs(product.price)}</div>
-              <div className={`text-[9px] font-bold mt-1 ${inStock ? 'text-green-500' : 'text-red-500'}`}>
+              <div className={`text-[9px] font-bold mt-1 ${inStock ? 'text-green-500' : 'text-orange-500'}`}>
                 {inStock ? 'In Stock' : 'Out of Stock'}
               </div>
             </div>

@@ -32,20 +32,29 @@ export default async function ShopPage({
         <p className="text-[#18202D] max-w-md mb-8">Browse our catalogue of premium B2B corporate supplies and institutional inventory.</p>
 
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-10">
-          <Link
-            href={q ? `/shop?q=${encodeURIComponent(q)}` : '/shop'}
-            className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-[13px] font-bold transition-all ${
-              !category
-                ? 'bg-[#18202D] text-white shadow-md'
-                : 'bg-white text-[#18202D] hover:text-[#18202D] hover:bg-gray-50 shadow-sm border border-gray-200'
-            }`}
-          >
-            All
-          </Link>
+          {(() => {
+            const allParams = new URLSearchParams();
+            if (q) allParams.set('q', q);
+            if (sort) allParams.set('sort', sort);
+            const allQs = allParams.toString();
+            return (
+              <Link
+                href={allQs ? `/shop?${allQs}` : '/shop'}
+                className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-[13px] font-bold transition-all ${
+                  !category
+                    ? 'bg-[#18202D] text-white shadow-md'
+                    : 'bg-white text-[#18202D] hover:text-[#18202D] hover:bg-gray-50 shadow-sm border border-gray-200'
+                }`}
+              >
+                All
+              </Link>
+            );
+          })()}
           {categories.map((cat) => {
             const params = new URLSearchParams();
             params.set('category', cat.slug);
             if (q) params.set('q', q);
+            if (sort) params.set('sort', sort);
             const isActive = category === cat.slug;
             return (
               <Link

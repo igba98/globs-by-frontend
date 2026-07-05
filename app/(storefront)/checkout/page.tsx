@@ -134,8 +134,11 @@ export default function CheckoutPage() {
   }
 
   // Wait for the localStorage cart to hydrate before deciding whether to show
-  // the empty-cart state, so a real saved cart doesn't flash "empty".
-  if (isHydrated && items.length === 0) {
+  // the empty-cart state, so a real saved cart doesn't flash "empty". Also
+  // skip this state while a successful submit is clearing the cart and
+  // navigating away — otherwise "Your cart is empty" flashes for a frame
+  // between clearCart() and the router.push() to the success page.
+  if (isHydrated && items.length === 0 && !isSubmitting) {
     return (
       <div className="w-full max-w-2xl mx-auto py-24 px-4 text-center">
         <h1 className="text-3xl font-extrabold font-heading text-[#94B447] mb-4">Your cart is empty</h1>

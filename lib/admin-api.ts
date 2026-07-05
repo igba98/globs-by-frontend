@@ -40,15 +40,45 @@ interface RefreshResponseData {
   accessToken: string;
 }
 
+function isValidAdminUser(user: unknown): user is AdminUser {
+  if (!user || typeof user !== 'object') return false;
+  const u = user as Partial<AdminUser>;
+  return (
+    typeof u.id === 'string' &&
+    typeof u.name === 'string' &&
+    typeof u.email === 'string' &&
+    typeof u.role === 'string'
+  );
+}
+
+// Cache the last parsed session by raw string so getSession() returns a
+// stable object reference when the underlying storage hasn't changed. This
+// lets getSession() be used directly as a useSyncExternalStore snapshot
+// (which compares snapshots with Object.is) without tearing/looping.
+let cachedRaw: string | null | undefined;
+let cachedSession: AdminSession | null = null;
+
 export function getSession(): AdminSession | null {
   if (typeof window === 'undefined') return null;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
+    if (raw === cachedRaw) return cachedSession;
+    cachedRaw = raw;
+    if (!raw) {
+      cachedSession = null;
+      return null;
+    }
     const parsed = JSON.parse(raw) as Partial<AdminSession> | null;
-    if (!parsed || typeof parsed.accessToken !== 'string' || !parsed.user) return null;
-    return parsed as AdminSession;
+    if (!parsed || typeof parsed.accessToken !== 'string' || !isValidAdminUser(parsed.user)) {
+      clearSession();
+      cachedSession = null;
+      return null;
+    }
+    cachedSession = { accessToken: parsed.accessToken, user: parsed.user };
+    return cachedSession;
   } catch {
+    clearSession();
+    cachedSession = null;
     return null;
   }
 }
@@ -135,10 +165,12 @@ async function rawFetch<T>(
     headers.set('Content-Type', 'application/json');
   }
 
+  // NOTE: no `credentials: 'include'` here — the Bearer access token in the
+  // Authorization header is sufficient for regular admin API calls. Only the
+  // auth endpoints (login/refresh/logout) need the refresh cookie sent.
   const res = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers,
-    credentials: 'include',
   });
   const body = (await res.json().catch(() => undefined)) as AdminEnvelope<T> | undefined;
   return { res, body };
