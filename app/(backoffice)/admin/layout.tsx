@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { adminLogout, getSession, type AdminSession } from '@/lib/admin-api';
 // Icons are defined as inline SVGs below to avoid external dependency issues.
 const BoxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>;
 const GraphIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
@@ -23,12 +24,51 @@ const navLinks = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [session, setSession] = useState<AdminSession | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
+  const isLoginRoute = pathname === '/admin/login';
+
+  useEffect(() => {
+    if (isLoginRoute) {
+      setCheckingSession(false);
+      return;
+    }
+    const current = getSession();
+    if (!current) {
+      router.replace('/admin/login');
+      return;
+    }
+    setSession(current);
+    setCheckingSession(false);
+  }, [isLoginRoute, pathname, router]);
+
+  const handleSignOut = async () => {
+    await adminLogout();
+    router.replace('/admin/login');
+  };
 
   // If we are identically on exactly /admin/login, we don't return the shell
-  if (pathname === '/admin/login') {
+  if (isLoginRoute) {
     return <>{children}</>;
   }
+
+  // Guard: no session yet (or redirecting) — render nothing but a tiny splash
+  if (checkingSession || !session) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-[#f4f5f7]">
+        <div className="w-6 h-6 border-2 border-gray-300 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const initials = session.user.name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('') || 'AD';
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4f5f7]">
@@ -53,11 +93,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             )
           })}
         </nav>
-        <div className="p-4 border-t border-gray-800">
-          <Link href="/admin/login" className="flex items-center gap-3 px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+        <div className="p-4 border-t border-gray-800 space-y-3">
+          <div className="flex items-center gap-3 px-3">
+            <div className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center font-bold text-sm shrink-0">
+              {initials}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-white truncate">{session.user.name}</p>
+              <p className="text-xs text-gray-400 truncate capitalize">{session.user.role.toLowerCase()}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             Sign Out
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -86,7 +139,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
             </button>
             <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-bold text-sm">
-              AD
+              {initials}
             </div>
           </div>
         </header>
