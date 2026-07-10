@@ -8,6 +8,9 @@ import type {
   PresignResponse,
   Product,
   SiteSettings,
+  SmsRecipient,
+  SmsRecipientPayload,
+  SmsStatus,
 } from './types';
 
 const STORAGE_KEY = 'gb-admin';
@@ -365,5 +368,42 @@ export async function updateAdminSettings(payload: Partial<SiteSettings>): Promi
     method: 'PATCH',
     body: JSON.stringify(payload),
   });
+  return data;
+}
+
+// ---------------------------------------------------------------------------
+// SMS recipients (staff notification numbers) + Beem status
+// ---------------------------------------------------------------------------
+
+export async function getSmsRecipients(): Promise<SmsRecipient[]> {
+  const { data } = await adminFetch<SmsRecipient[]>('/api/admin/sms-recipients?limit=100');
+  return data;
+}
+
+export async function createSmsRecipient(payload: SmsRecipientPayload): Promise<SmsRecipient> {
+  const { data } = await adminFetch<SmsRecipient>('/api/admin/sms-recipients', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return data;
+}
+
+export async function updateSmsRecipient(
+  id: string,
+  payload: Partial<SmsRecipientPayload>,
+): Promise<SmsRecipient> {
+  const { data } = await adminFetch<SmsRecipient>(`/api/admin/sms-recipients/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  return data;
+}
+
+export async function deleteSmsRecipient(id: string): Promise<void> {
+  await adminFetch<unknown>(`/api/admin/sms-recipients/${id}`, { method: 'DELETE' });
+}
+
+export async function getSmsStatus(): Promise<SmsStatus> {
+  const { data } = await adminFetch<SmsStatus>('/api/admin/sms-recipients/status');
   return data;
 }

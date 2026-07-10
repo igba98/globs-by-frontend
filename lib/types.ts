@@ -69,6 +69,38 @@ export interface DeliveryZone {
   estimatedDays: string | null;
 }
 
+export interface SmsRecipient {
+  id: string;
+  label: string;
+  phone: string;
+  region: string | null;
+  isActive: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SmsRecipientPayload {
+  label: string;
+  phone: string;
+  region?: string | null;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface BeemSenderName {
+  senderid: string;
+  status: string;
+}
+
+export interface SmsStatus {
+  configured: boolean;
+  balance: unknown | null;
+  senderNames: BeemSenderName[] | null;
+  senderActive: boolean | null;
+  error?: string;
+}
+
 export interface SiteSettings {
   id: string;
   contactDsm: string;
