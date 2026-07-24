@@ -141,7 +141,15 @@ export async function adminLogout(): Promise<void> {
   }
 }
 
-let refreshInFlight: Promise<string | null> | null = null;
+interface RefreshResult {
+  accessToken: string | null;
+  // True when the refresh POST itself threw (offline / wifi blip) rather
+  // than the server responding with a rejection. Callers must not treat
+  // this the same as a dead session — the stored session is left intact.
+  networkError: boolean;
+}
+
+let refreshInFlight: Promise<RefreshResult> | null = null;
 
 /**
  * Single-flight token refresh. The backend ROTATES refresh tokens (the old
@@ -150,7 +158,7 @@ let refreshInFlight: Promise<string | null> | null = null;
  * session ("shaking" admin UI). All 401 handlers therefore share one
  * in-flight refresh, and the session is saved/cleared exactly once, here.
  */
-function refreshSession(): Promise<string | null> {
+function refreshSession(): Promise<RefreshResult> {
   if (!refreshInFlight) {
     refreshInFlight = (async () => {
       try {
@@ -169,9 +177,9 @@ function refreshSession(): Promise<string | null> {
         } else if (!accessToken) {
           clearSession();
         }
-        return accessToken;
+        return { accessToken, networkError: false };
       } catch {
-        return null;
+        return { accessToken: null, networkError: true };
       } finally {
         refreshInFlight = null;
       }
@@ -216,10 +224,18 @@ export async function adminFetch<T>(
     }
 
     const latest = getSession();
-    const newAccessToken =
-      latest && latest.accessToken !== session.accessToken
-        ? latest.accessToken // another caller already refreshed
-        : await refreshSession();
+    let newAccessToken: string | null;
+    if (latest && latest.accessToken !== session.accessToken) {
+      newAccessToken = latest.accessToken; // another caller already refreshed
+    } else {
+      const result = await refreshSession();
+      if (!result.accessToken && result.networkError) {
+        // The refresh request itself failed to reach the server — this is
+        // not a dead session, so leave it intact and let the caller retry.
+        throw new ApiError(0, 'NETWORK', 'Network error — please try again');
+      }
+      newAccessToken = result.accessToken;
+    }
     if (!newAccessToken) {
       throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
     }
@@ -227,7 +243,12 @@ export async function adminFetch<T>(
     const retry = await rawFetch<T>(path, init ?? {}, newAccessToken);
     if (!retry.res.ok || !retry.body?.success) {
       if (retry.res.status === 401) {
-        clearSession();
+        // Only clear the session if the token that just failed is still the
+        // one stored — a concurrent caller may have already rotated to a
+        // newer, valid session, which must not be wiped out here.
+        if (getSession()?.accessToken === newAccessToken) {
+          clearSession();
+        }
         throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
       }
       throw new ApiError(
@@ -249,8 +270,13 @@ export async function adminFetch<T>(
 /**
  * Returns true when the given error means the admin session is gone
  * (expired refresh cookie, missing/invalid token, etc). Callers should
- * redirect to /admin/login when this is true — adminFetch has already
- * cleared the stored session.
+ * redirect to /admin/login when this is true. Note: adminFetch clears the
+ * stored session in this case *unless* a concurrent caller has already
+ * refreshed to a newer, still-valid session in the meantime — either way,
+ * this specific request's session is gone and the redirect is correct.
+ * A transient network failure while refreshing throws a separate
+ * `ApiError('NETWORK', ...)` instead, which this helper returns false for,
+ * since the session itself was left untouched.
  */
 export function isSessionExpiredError(err: unknown): boolean {
   return err instanceof ApiError && err.code === 'SESSION_EXPIRED';
