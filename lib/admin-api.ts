@@ -141,20 +141,43 @@ export async function adminLogout(): Promise<void> {
   }
 }
 
-async function refreshAccessToken(): Promise<string | null> {
-  try {
-    const res = await fetch(`${API_BASE}/api/admin/auth/refresh`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-    const body = (await res.json().catch(() => undefined)) as
-      | AdminEnvelope<RefreshResponseData>
-      | undefined;
-    if (!res.ok || !body?.success || !body.data?.accessToken) return null;
-    return body.data.accessToken;
-  } catch {
-    return null;
+let refreshInFlight: Promise<string | null> | null = null;
+
+/**
+ * Single-flight token refresh. The backend ROTATES refresh tokens (the old
+ * jti is blacklisted), so two concurrent refresh calls race: the loser
+ * presents an already-rotated cookie, gets rejected, and used to nuke the
+ * session ("shaking" admin UI). All 401 handlers therefore share one
+ * in-flight refresh, and the session is saved/cleared exactly once, here.
+ */
+function refreshSession(): Promise<string | null> {
+  if (!refreshInFlight) {
+    refreshInFlight = (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+        const body = (await res.json().catch(() => undefined)) as
+          | AdminEnvelope<RefreshResponseData>
+          | undefined;
+        const accessToken =
+          res.ok && body?.success && body.data?.accessToken ? body.data.accessToken : null;
+        const session = getSession();
+        if (accessToken && session) {
+          saveSession({ ...session, accessToken });
+        } else if (!accessToken) {
+          clearSession();
+        }
+        return accessToken;
+      } catch {
+        return null;
+      } finally {
+        refreshInFlight = null;
+      }
+    })();
   }
+  return refreshInFlight;
 }
 
 async function rawFetch<T>(
@@ -192,13 +215,14 @@ export async function adminFetch<T>(
       throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
     }
 
-    const newAccessToken = await refreshAccessToken();
+    const latest = getSession();
+    const newAccessToken =
+      latest && latest.accessToken !== session.accessToken
+        ? latest.accessToken // another caller already refreshed
+        : await refreshSession();
     if (!newAccessToken) {
-      clearSession();
       throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
     }
-
-    saveSession({ ...session, accessToken: newAccessToken });
 
     const retry = await rawFetch<T>(path, init ?? {}, newAccessToken);
     if (!retry.res.ok || !retry.body?.success) {
