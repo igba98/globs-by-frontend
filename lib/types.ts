@@ -208,6 +208,10 @@ export interface AdminOrder {
   createdAt: string;
   updatedAt?: string;
   paidAt: string | null;
+  invoiceFileKey: string | null;
+  invoiceFileName: string | null;
+  invoiceMimeType: string | null;
+  invoiceUploadedAt: string | null;
 }
 
 export interface DashboardLowStockItem {

@@ -1,9 +1,9 @@
 'use client';
 
-import { use, useCallback, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getAdminOrder, isSessionExpiredError, updateAdminOrder } from '@/lib/admin-api';
+import { getAdminOrder, isSessionExpiredError, updateAdminOrder, uploadOrderInvoice } from '@/lib/admin-api';
 import { ApiError, API_BASE } from '@/lib/api';
 import { formatDateTime, formatTzs } from '@/lib/format';
 import type { AdminOrder } from '@/lib/types';
@@ -23,6 +23,26 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [savedNote, setSavedNote] = useState<string | null>(null);
+
+  const [invoiceUploading, setInvoiceUploading] = useState(false);
+  const [invoiceError, setInvoiceError] = useState<string | null>(null);
+  const invoiceInputRef = useRef<HTMLInputElement>(null);
+
+  const handleInvoiceFile = async (file: File | undefined) => {
+    if (!file || !order) return;
+    setInvoiceUploading(true);
+    setInvoiceError(null);
+    try {
+      const updated = await uploadOrderInvoice(order.id, file);
+      setOrder(updated);
+    } catch (err) {
+      if (isSessionExpiredError(err)) { router.replace('/admin/login'); return; }
+      setInvoiceError(err instanceof ApiError ? err.message : 'Upload failed.');
+    } finally {
+      setInvoiceUploading(false);
+      if (invoiceInputRef.current) invoiceInputRef.current.value = '';
+    }
+  };
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -103,16 +123,6 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             <h1 className="text-3xl font-bold text-primary font-heading">Order {order.orderNumber}</h1>
             <OrderStatusBadge status={order.orderStatus} />
             <PaymentStatusBadge status={order.paymentStatus} />
-            {order.orderStatus !== 'PENDING' && order.orderStatus !== 'CANCELLED' && (
-              <a
-                href={`${API_BASE}/api/orders/${order.orderNumber}/invoice.pdf`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-primary hover:border-gray-400 transition-colors"
-              >
-                View Proforma Invoice
-              </a>
-            )}
             {order.paymentStatus === 'PAID' && (
               <a
                 href={`${API_BASE}/api/orders/${order.orderNumber}/receipt.pdf`}
@@ -200,6 +210,49 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
 
         {/* Right Column (1/3) */}
         <div className="space-y-8">
+
+          {/* Invoice */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 relative z-10">
+            <h2 className="text-lg font-bold text-primary mb-1">Invoice</h2>
+            <p className="text-xs text-gray-500 mb-4">
+              Attach the invoice from your invoicing system. Required before the order can be confirmed — the customer&apos;s SMS links to this file.
+            </p>
+            {order.invoiceFileName ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-primary truncate">{order.invoiceFileName}</p>
+                    {order.invoiceUploadedAt && (
+                      <p className="text-xs text-gray-400">Uploaded {new Date(order.invoiceUploadedAt).toLocaleString()}</p>
+                    )}
+                  </div>
+                  <a
+                    href={`${API_BASE}/api/orders/${order.orderNumber}/invoice`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="text-sm font-semibold text-[#94B447] hover:underline shrink-0"
+                  >
+                    View
+                  </a>
+                </div>
+                <button type="button" onClick={() => invoiceInputRef.current?.click()} disabled={invoiceUploading}
+                  className="text-sm font-semibold text-gray-500 hover:text-primary disabled:opacity-50">
+                  {invoiceUploading ? 'Uploading…' : 'Replace file'}
+                </button>
+              </div>
+            ) : (
+              <button type="button" onClick={() => invoiceInputRef.current?.click()} disabled={invoiceUploading}
+                className="w-full border-2 border-dashed border-gray-300 hover:border-[#94B447] rounded-xl py-6 text-sm font-semibold text-gray-500 hover:text-primary transition-colors disabled:opacity-50">
+                {invoiceUploading ? 'Uploading…' : 'Upload invoice (PDF, Word, or image)'}
+              </button>
+            )}
+            <input ref={invoiceInputRef} type="file" hidden
+              accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg,image/webp"
+              onChange={(e) => handleInvoiceFile(e.target.files?.[0])} />
+            {invoiceError && <p className="text-sm text-red-600 mt-3">{invoiceError}</p>}
+            {!order.invoiceFileName && order.orderStatus === 'PENDING' && (
+              <p className="text-xs text-amber-600 mt-3">Confirming is blocked until an invoice is attached.</p>
+            )}
+          </div>
 
           {/* Order Status Controller */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-visible relative z-20">

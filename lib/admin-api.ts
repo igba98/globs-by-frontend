@@ -404,6 +404,16 @@ export async function updateAdminOrder(
   return data;
 }
 
+export async function uploadOrderInvoice(orderId: string, file: File): Promise<AdminOrder> {
+  const form = new FormData();
+  form.append('file', file);
+  const { data } = await adminFetch<AdminOrder>(`/api/admin/orders/${orderId}/invoice`, {
+    method: 'POST',
+    body: form,
+  });
+  return data;
+}
+
 // ---------------------------------------------------------------------------
 // Settings
 // ---------------------------------------------------------------------------

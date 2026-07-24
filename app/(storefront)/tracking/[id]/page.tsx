@@ -136,12 +136,12 @@ export default async function TrackingPage({ params }: { params: Promise<{ id: s
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             {order.orderStatus !== 'PENDING' && order.orderStatus !== 'CANCELLED' && (
               <a
-                href={`${API_BASE}/api/orders/${order.orderNumber}/invoice.pdf`}
+                href={`${API_BASE}/api/orders/${order.orderNumber}/invoice`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex justify-center bg-[#94B447] hover:bg-[#86a53f] text-white font-medium px-8 py-4 rounded-xl transition-colors"
               >
-                Download Proforma Invoice (PDF)
+                View Invoice
               </a>
             )}
             {order.paymentStatus === 'PAID' && (
