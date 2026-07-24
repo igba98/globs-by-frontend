@@ -207,6 +207,7 @@ export interface AdminOrder {
   items: AdminOrderItem[];
   createdAt: string;
   updatedAt?: string;
+  paidAt: string | null;
 }
 
 export interface DashboardLowStockItem {

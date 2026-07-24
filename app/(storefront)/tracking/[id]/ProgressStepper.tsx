@@ -53,7 +53,7 @@ export default function ProgressStepper({
           const isDone = i < current;
           const isCurrent = i === current;
           return (
-            <li key={label} className="flex sm:flex-col sm:flex-1 items-center sm:items-center gap-3 sm:gap-2 relative">
+            <li key={label} className="flex sm:flex-col sm:flex-1 items-center sm:items-center gap-3 sm:gap-2 relative isolate">
               {/* Connector line (desktop: horizontal, before each step except the first) */}
               {i > 0 && (
                 <div
