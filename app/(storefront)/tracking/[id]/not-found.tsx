@@ -20,11 +20,18 @@ export default function TrackingNotFound() {
         confirmation SMS or email and try again.
       </p>
 
-      <Link href="/shop">
-        <button className="px-10 py-5 bg-[#18202D] text-white font-bold rounded-xl hover:bg-black transition-colors shadow-lg text-[15px]">
-          Continue Shopping
-        </button>
-      </Link>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Link href="/tracking">
+          <button className="px-10 py-5 bg-[#18202D] text-white font-bold rounded-xl hover:bg-black transition-colors shadow-lg text-[15px]">
+            Try Another Number
+          </button>
+        </Link>
+        <Link href="/shop">
+          <button className="px-10 py-5 bg-white border-2 border-gray-200 text-[#18202D] font-bold rounded-xl hover:border-gray-400 transition-colors text-[15px]">
+            Continue Shopping
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
