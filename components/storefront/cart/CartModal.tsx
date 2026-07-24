@@ -101,13 +101,21 @@ export default function CartModal() {
               <span className="text-lg font-medium text-primary">Subtotal</span>
               <span className="text-xl font-heading text-[#94B447]">{formatTzs(subtotal)}</span>
             </div>
-            <Link
-              href="/checkout"
-              onClick={() => setIsCartOpen(false)}
-              className="w-full bg-black text-white hover:bg-[#1a1a1a] transition-colors py-4 rounded-xl font-medium text-lg flex items-center justify-center"
-            >
-              Continue to Checkout
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="flex-1 bg-white border-2 border-gray-200 hover:border-[#18202D] text-[#18202D] transition-colors py-4 rounded-xl font-medium text-lg flex items-center justify-center"
+              >
+                Continue Shopping
+              </button>
+              <Link
+                href="/checkout"
+                onClick={() => setIsCartOpen(false)}
+                className="flex-1 bg-black text-white hover:bg-[#1a1a1a] transition-colors py-4 rounded-xl font-medium text-lg flex items-center justify-center"
+              >
+                Continue to Checkout
+              </Link>
+            </div>
           </div>
         )}
       </div>

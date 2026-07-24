@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/storefront/cart/CartContext';
+import { ShoppingCart } from '@/components/icons';
 import type { SiteSettings } from '@/lib/types';
 
 export default function StorefrontChrome({
@@ -15,7 +16,7 @@ export default function StorefrontChrome({
   settings: SiteSettings | null;
 }) {
   const router = useRouter();
-  const { cartCount, setIsCartOpen } = useCart();
+  const { cartCount, setIsCartOpen, isHydrated } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -127,6 +128,20 @@ export default function StorefrontChrome({
                    <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>
                  )}
                </svg>
+             </button>
+
+             <button
+               onClick={() => setIsCartOpen(true)}
+               className="relative flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors text-[#18202D]"
+               title="Cart"
+               aria-label="Open cart"
+             >
+               <ShoppingCart className="w-[22px] h-[22px]" />
+               {isHydrated && cartCount > 0 && (
+                 <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 bg-[#94B447] text-white text-[11px] font-bold rounded-full flex items-center justify-center">
+                   {cartCount}
+                 </span>
+               )}
              </button>
 
              <button onClick={() => setIsMenuOpen(true)} className="flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors text-[#18202D]">
