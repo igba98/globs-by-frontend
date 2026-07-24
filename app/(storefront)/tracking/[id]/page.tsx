@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ApiError, trackOrder } from '@/lib/api';
 import { formatTzs } from '@/lib/format';
 import { CheckCircle } from '@/components/icons';
+import ProgressStepper from './ProgressStepper';
 
 function labelize(value: string): string {
   return value
@@ -78,6 +79,8 @@ export default async function TrackingPage({ params }: { params: Promise<{ id: s
             </span>
           </div>
         </div>
+
+        <ProgressStepper orderStatus={order.orderStatus} deliveryMethod={order.deliveryMethod} />
 
         {/* Order Details */}
         <div className="bg-[#f8f9fa] rounded-[3rem] p-10 sm:p-16 border border-gray-100">
