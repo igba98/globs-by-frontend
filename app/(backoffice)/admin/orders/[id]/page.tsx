@@ -4,7 +4,7 @@ import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getAdminOrder, isSessionExpiredError, updateAdminOrder } from '@/lib/admin-api';
-import { ApiError } from '@/lib/api';
+import { ApiError, API_BASE } from '@/lib/api';
 import { formatDateTime, formatTzs } from '@/lib/format';
 import type { AdminOrder } from '@/lib/types';
 import { ORDER_STATUSES, OrderStatusBadge, PAYMENT_STATUSES, PaymentStatusBadge, humanizeStatus } from '@/components/backoffice/StatusBadges';
@@ -99,10 +99,30 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             <span className="mx-2">/</span>
             <span className="text-primary">{order.orderNumber}</span>
           </nav>
-          <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-3xl font-bold text-primary font-heading">Order {order.orderNumber}</h1>
             <OrderStatusBadge status={order.orderStatus} />
             <PaymentStatusBadge status={order.paymentStatus} />
+            {order.orderStatus !== 'PENDING' && order.orderStatus !== 'CANCELLED' && (
+              <a
+                href={`${API_BASE}/api/orders/${order.orderNumber}/invoice.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-primary hover:border-gray-400 transition-colors"
+              >
+                View Proforma Invoice
+              </a>
+            )}
+            {order.paymentStatus === 'PAID' && (
+              <a
+                href={`${API_BASE}/api/orders/${order.orderNumber}/receipt.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-primary hover:border-gray-400 transition-colors"
+              >
+                View Receipt
+              </a>
+            )}
           </div>
           <p className="text-sm text-muted-foreground mt-2">{formatDateTime(order.createdAt)}</p>
         </div>

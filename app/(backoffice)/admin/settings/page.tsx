@@ -18,6 +18,8 @@ type FormState = {
   emailMarketing: string;
   instagramUrl: string;
   facebookUrl: string;
+  tin: string;
+  vrn: string;
 };
 
 function toFormState(settings: SiteSettings): FormState {
@@ -32,6 +34,8 @@ function toFormState(settings: SiteSettings): FormState {
     emailMarketing: settings.emailMarketing ?? '',
     instagramUrl: settings.instagramUrl ?? '',
     facebookUrl: settings.facebookUrl ?? '',
+    tin: settings.tin ?? '',
+    vrn: settings.vrn ?? '',
   };
 }
 
@@ -170,6 +174,16 @@ export default function SettingsPage() {
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-500">Marketing Email</label>
               <input type="email" value={form.emailMarketing} onChange={(e) => setField('emailMarketing', e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#C9A84C] transition-all" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-500">TIN (Tax Identification Number)</label>
+              <input type="text" value={form.tin} onChange={(e) => setField('tin', e.target.value)} placeholder="123-456-789" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#C9A84C] transition-all" />
+              <p className="text-xs text-muted-foreground">Printed on invoice and receipt PDFs.</p>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-500">VRN (VAT Registration Number)</label>
+              <input type="text" value={form.vrn} onChange={(e) => setField('vrn', e.target.value)} placeholder="40-123456-A" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#C9A84C] transition-all" />
+              <p className="text-xs text-muted-foreground">Printed on invoice and receipt PDFs.</p>
             </div>
           </div>
         </div>

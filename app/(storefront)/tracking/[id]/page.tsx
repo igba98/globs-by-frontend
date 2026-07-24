@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ApiError, trackOrder } from '@/lib/api';
+import { ApiError, API_BASE, trackOrder } from '@/lib/api';
 import { formatTzs } from '@/lib/format';
 import { CheckCircle } from '@/components/icons';
 import ProgressStepper from './ProgressStepper';
@@ -131,6 +131,31 @@ export default async function TrackingPage({ params }: { params: Promise<{ id: s
             </div>
           </div>
         </div>
+
+        {(order.orderStatus !== 'PENDING' && order.orderStatus !== 'CANCELLED') || order.paymentStatus === 'PAID' ? (
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            {order.orderStatus !== 'PENDING' && order.orderStatus !== 'CANCELLED' && (
+              <a
+                href={`${API_BASE}/api/orders/${order.orderNumber}/invoice.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex justify-center bg-[#94B447] hover:bg-[#86a53f] text-white font-medium px-8 py-4 rounded-xl transition-colors"
+              >
+                Download Proforma Invoice (PDF)
+              </a>
+            )}
+            {order.paymentStatus === 'PAID' && (
+              <a
+                href={`${API_BASE}/api/orders/${order.orderNumber}/receipt.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex justify-center bg-[#18202D] hover:bg-black text-white font-medium px-8 py-4 rounded-xl transition-colors"
+              >
+                Download Receipt (PDF)
+              </a>
+            )}
+          </div>
+        ) : null}
 
         <div className="mt-12 text-center">
           <Link href="/shop" className="inline-flex bg-white border-2 border-gray-100 hover:border-gray-300 text-primary font-medium px-8 py-4 rounded-xl transition-colors">

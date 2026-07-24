@@ -115,6 +115,8 @@ export interface SiteSettings {
   twitterUrl: string | null;
   announcementText: string;
   paymentInstructions?: string;
+  tin?: string;
+  vrn?: string;
 }
 
 export interface TrackingItem {
