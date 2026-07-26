@@ -41,6 +41,7 @@ const navLinks = [
   { name: 'Products', href: '/admin/products', icon: BoxIcon },
   { name: 'Inventory', href: '/admin/inventory', icon: InventoryIcon },
   { name: 'SMS', href: '/admin/sms', icon: SmsIcon },
+  { name: 'Communications', href: '/admin/communications', icon: SmsIcon },
   { name: 'Settings', href: '/admin/settings', icon: SettingsIcon },
 ];
 

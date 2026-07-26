@@ -2,9 +2,16 @@ import { API_BASE, ApiError } from './api';
 import type {
   AdminOrder,
   AdminProductPayload,
+  Campaign,
+  CampaignDetail,
+  CommColumn,
+  ContactListDetail,
+  ContactListSummary,
   DashboardStats,
   Meta,
   Paginated,
+  ParsedRow,
+  ParseResult,
   PresignResponse,
   Product,
   SiteSettings,
@@ -217,6 +224,13 @@ export async function adminFetch<T>(
   const session = getSession();
   const { res, body } = await rawFetch<T>(path, init ?? {}, session?.accessToken);
 
+  // 204 No Content (e.g. DELETE) has no JSON body to parse/validate — short
+  // circuit before the !body?.success check below, which would otherwise
+  // misread "no body" as a failed response.
+  if (res.status === 204) {
+    return { data: undefined as T };
+  }
+
   if (res.status === 401) {
     if (!session) {
       clearSession();
@@ -241,6 +255,9 @@ export async function adminFetch<T>(
     }
 
     const retry = await rawFetch<T>(path, init ?? {}, newAccessToken);
+    if (retry.res.status === 204) {
+      return { data: undefined as T };
+    }
     if (!retry.res.ok || !retry.body?.success) {
       if (retry.res.status === 401) {
         // Only clear the session if the token that just failed is still the
@@ -466,4 +483,78 @@ export async function deleteSmsRecipient(id: string): Promise<void> {
 export async function getSmsStatus(): Promise<SmsStatus> {
   const { data } = await adminFetch<SmsStatus>('/api/admin/sms-recipients/status');
   return data;
+}
+
+// ---------------------------------------------------------------------------
+// Communications (bulk SMS)
+// ---------------------------------------------------------------------------
+
+/**
+ * Authorized fetch returning the raw Response (for binary downloads). Reuses
+ * the same 401→refresh→retry flow as adminFetch. Note: `refreshSession`
+ * resolves a `RefreshResult` (not a bare token string), so the token is
+ * pulled off `.accessToken`.
+ */
+export async function adminFetchRaw(path: string, init?: RequestInit): Promise<Response> {
+  const session = getSession();
+  const headers = new Headers(init?.headers);
+  if (session) headers.set('Authorization', `Bearer ${session.accessToken}`);
+  if (init?.body && typeof init.body === 'string' && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+  let res = await fetch(`${API_BASE}${path}`, { ...init, headers });
+  if (res.status === 401 && session) {
+    const latest = getSession();
+    let newToken: string | null;
+    if (latest && latest.accessToken !== session.accessToken) {
+      newToken = latest.accessToken; // another caller already refreshed
+    } else {
+      newToken = (await refreshSession()).accessToken;
+    }
+    if (!newToken) throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
+    headers.set('Authorization', `Bearer ${newToken}`);
+    res = await fetch(`${API_BASE}${path}`, { ...init, headers });
+  }
+  if (!res.ok) {
+    const body = (await res.json().catch(() => undefined)) as AdminEnvelope<unknown> | undefined;
+    throw new ApiError(res.status, body?.error?.code ?? 'UNKNOWN', body?.error?.message ?? 'Request failed');
+  }
+  return res;
+}
+
+export async function downloadCommTemplate(columns: CommColumn[]): Promise<Blob> {
+  const res = await adminFetchRaw('/api/admin/communications/template', {
+    method: 'POST', body: JSON.stringify({ columns }),
+  });
+  return res.blob();
+}
+export async function parseCommSheet(file: File): Promise<ParseResult> {
+  const form = new FormData(); form.append('file', file);
+  const { data } = await adminFetch<ParseResult>('/api/admin/communications/parse', { method: 'POST', body: form });
+  return data;
+}
+export async function createCommList(name: string, columns: CommColumn[], rows: ParsedRow[]): Promise<ContactListSummary> {
+  const { data } = await adminFetch<ContactListSummary>('/api/admin/communications/lists', {
+    method: 'POST', body: JSON.stringify({ name, columns, rows }),
+  });
+  return data;
+}
+export async function getCommLists(): Promise<ContactListSummary[]> {
+  return (await adminFetch<ContactListSummary[]>('/api/admin/communications/lists')).data;
+}
+export async function getCommList(id: string): Promise<ContactListDetail> {
+  return (await adminFetch<ContactListDetail>(`/api/admin/communications/lists/${id}`)).data;
+}
+export async function deleteCommList(id: string): Promise<void> {
+  await adminFetch<void>(`/api/admin/communications/lists/${id}`, { method: 'DELETE' });
+}
+export async function sendCommCampaign(payload: { message: string; rows?: ParsedRow[]; listId?: string }): Promise<{ campaignId: string; total: number }> {
+  return (await adminFetch<{ campaignId: string; total: number }>('/api/admin/communications/send', {
+    method: 'POST', body: JSON.stringify(payload),
+  })).data;
+}
+export async function getCommCampaigns(page = 1): Promise<{ items: Campaign[]; meta?: unknown }> {
+  const res = await adminFetch<Campaign[]>(`/api/admin/communications/campaigns?page=${page}&limit=20`);
+  return { items: res.data, meta: res.meta };
+}
+export async function getCommCampaign(id: string): Promise<CampaignDetail> {
+  return (await adminFetch<CampaignDetail>(`/api/admin/communications/campaigns/${id}`)).data;
 }

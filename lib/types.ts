@@ -283,3 +283,25 @@ export interface AdminProductPayload {
   compareAtPrice?: number | null;
   images?: AdminProductImageInput[];
 }
+
+// ---------------------------------------------------------------------------
+// Communications (bulk SMS)
+// ---------------------------------------------------------------------------
+
+export interface CommColumn { key: string; label: string }
+export interface ParsedRow { phone: string; data: Record<string, string> }
+export interface ParseInvalidRow { rowNumber: number; reason: string }
+export interface ParseResult { columns: CommColumn[]; rows: ParsedRow[]; invalid: ParseInvalidRow[] }
+export interface ContactListSummary { id: string; name: string; columns: CommColumn[]; contactCount: number; createdAt: string }
+export interface ContactListDetail extends ContactListSummary {
+  contacts: { id: string; phone: string; data: Record<string, string> }[];
+}
+export type CampaignStatus = 'PROCESSING' | 'COMPLETED' | 'FAILED';
+export type RecipientStatus = 'PENDING' | 'SENT' | 'FAILED';
+export interface Campaign {
+  id: string; message: string; listName: string | null; total: number;
+  sentCount: number; failedCount: number; status: CampaignStatus; createdAt: string;
+}
+export interface CampaignDetail extends Campaign {
+  recipients: { id: string; phone: string; status: RecipientStatus; error: string | null; requestId: string | null; sentAt: string | null }[];
+}
