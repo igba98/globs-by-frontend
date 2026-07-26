@@ -30,6 +30,14 @@ export default function ListsTab({ onSendToList }: { onSendToList: (id: string) 
     catch (err) { setError(err instanceof ApiError ? err.message : 'Delete failed.'); }
   };
 
+  const viewList = async (id: string) => {
+    try { setDetail(await getCommList(id)); }
+    catch (err) {
+      if (isSessionExpiredError(err)) { router.replace('/admin/login'); return; }
+      setError(err instanceof ApiError ? err.message : 'Failed to load the list.');
+    }
+  };
+
   if (loading) return <p className="text-sm text-gray-400 py-8">Loading lists…</p>;
 
   return (
@@ -53,7 +61,7 @@ export default function ListsTab({ onSendToList }: { onSendToList: (id: string) 
                 <td className="px-5 py-3 text-gray-400 whitespace-nowrap">{new Date(l.createdAt).toLocaleDateString()}</td>
                 <td className="px-5 py-3 whitespace-nowrap space-x-3 text-right">
                   <button onClick={() => onSendToList(l.id)} className="text-xs font-bold text-[#94B447] hover:underline">Send</button>
-                  <button onClick={async () => setDetail(await getCommList(l.id))} className="text-xs font-bold text-gray-400 hover:text-primary">View</button>
+                  <button onClick={() => viewList(l.id)} className="text-xs font-bold text-gray-400 hover:text-primary">View</button>
                   <button onClick={() => handleDelete(l)} className="text-xs font-bold text-gray-400 hover:text-red-500">Delete</button>
                 </td>
               </tr>
