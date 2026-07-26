@@ -25,6 +25,15 @@ export default function HistoryTab() {
 
   useEffect(() => { load(); }, [load]);
 
+  const viewDetails = useCallback(async (id: string) => {
+    try {
+      setDetail(await getCommCampaign(id));
+    } catch (err) {
+      if (isSessionExpiredError(err)) { router.replace('/admin/login'); return; }
+      setError(err instanceof ApiError ? err.message : 'Failed to load campaign details.');
+    }
+  }, [router]);
+
   if (loading) return <p className="text-sm text-gray-400 py-8">Loading history…</p>;
   if (error) return <p className="text-sm text-red-600 py-8">{error}</p>;
 
@@ -53,7 +62,7 @@ export default function HistoryTab() {
                 <td className="px-5 py-3"><span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                   c.status === 'COMPLETED' ? 'bg-green-50 text-green-700' : c.status === 'FAILED' ? 'bg-red-50 text-red-700' : 'bg-yellow-50 text-yellow-700'}`}>{c.status}</span></td>
                 <td className="px-5 py-3">
-                  <button onClick={async () => setDetail(await getCommCampaign(c.id))} className="text-xs font-bold text-gray-400 hover:text-primary">Details</button>
+                  <button onClick={() => viewDetails(c.id)} className="text-xs font-bold text-gray-400 hover:text-primary">Details</button>
                 </td>
               </tr>
             ))}

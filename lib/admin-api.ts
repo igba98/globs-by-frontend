@@ -501,13 +501,24 @@ export async function adminFetchRaw(path: string, init?: RequestInit): Promise<R
   if (session) headers.set('Authorization', `Bearer ${session.accessToken}`);
   if (init?.body && typeof init.body === 'string' && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
   let res = await fetch(`${API_BASE}${path}`, { ...init, headers });
-  if (res.status === 401 && session) {
+  if (res.status === 401) {
+    if (!session) {
+      clearSession();
+      throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
+    }
+
     const latest = getSession();
     let newToken: string | null;
     if (latest && latest.accessToken !== session.accessToken) {
       newToken = latest.accessToken; // another caller already refreshed
     } else {
-      newToken = (await refreshSession()).accessToken;
+      const result = await refreshSession();
+      if (!result.accessToken && result.networkError) {
+        // The refresh request itself failed to reach the server — this is
+        // not a dead session, so leave it intact and let the caller retry.
+        throw new ApiError(0, 'NETWORK', 'Network error — please try again');
+      }
+      newToken = result.accessToken;
     }
     if (!newToken) throw new ApiError(401, 'SESSION_EXPIRED', 'Session expired — please log in again');
     headers.set('Authorization', `Bearer ${newToken}`);
